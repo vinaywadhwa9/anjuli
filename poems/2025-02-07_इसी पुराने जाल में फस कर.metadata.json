@@ -1,0 +1,27 @@
+{
+    "title": "इसी पुराने जाल में फस कर",
+    "date": "2025-02-07",
+    "language": "Hindi",
+    "number_of_stanzas": 8,
+    "number_of_lines": 32,
+    "first_line": "एक बार मिलेगा फिर मौका",
+    "themes": [
+        "political awareness",
+        "empowerment"
+    ],
+    "theme_hindi": [
+        "राजनीतिक जागरूकता",
+        "सशक्तिकरण"
+    ],
+    "mood": [
+        "cautionary",
+        "assertive"
+    ],
+    "mood_hindi": [
+        "सावधान करने वाला",
+        "आत्मविश्वासी"
+    ],
+    "meter": "quatrains with consistent end rhymes",
+    "rhyme_scheme": "AABB",
+    "image_prompt": "Black and white, low fidelity sketch style (5x7 inches) of a voter confronting a politician, Indian style"
+}

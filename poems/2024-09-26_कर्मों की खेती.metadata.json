@@ -1,0 +1,27 @@
+{
+    "title": "कर्मों की खेती",
+    "date": "2024-09-26",
+    "language": "Hindi",
+    "number_of_stanzas": 10,
+    "number_of_lines": 40,
+    "first_line": "कुछ ज्ञानी है मित्र हमारे",
+    "themes": [
+        "karma",
+        "spirituality"
+    ],
+    "theme_hindi": [
+        "कर्म",
+        "आध्यात्मिकता"
+    ],
+    "mood": [
+        "philosophical",
+        "instructive"
+    ],
+    "mood_hindi": [
+        "दार्शनिक",
+        "शिक्षाप्रद"
+    ],
+    "meter": "quatrains with consistent end rhymes",
+    "rhyme_scheme": "AABB",
+    "image_prompt": "Black and white, low fidelity sketch style (5x7 inches) of a farmer sowing seeds in a field, Indian style"
+}

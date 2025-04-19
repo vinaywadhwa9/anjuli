@@ -1,0 +1,27 @@
+{
+    "title": "जगह नहीं बदलते पौधे",
+    "date": "2024-12-24",
+    "language": "Hindi",
+    "number_of_stanzas": 7,
+    "number_of_lines": 28,
+    "first_line": "सुबह की हल्की बयार में",
+    "themes": [
+        "contentment",
+        "nature"
+    ],
+    "theme_hindi": [
+        "संतोष",
+        "प्रकृति"
+    ],
+    "mood": [
+        "peaceful",
+        "contemplative"
+    ],
+    "mood_hindi": [
+        "शांतिपूर्ण",
+        "चिंतनशील"
+    ],
+    "meter": "quatrains with consistent end rhymes",
+    "rhyme_scheme": "AABB",
+    "image_prompt": "Black and white, low fidelity sketch style (5x7 inches) of plants swaying in morning breeze with a person observing, Indian style"
+}

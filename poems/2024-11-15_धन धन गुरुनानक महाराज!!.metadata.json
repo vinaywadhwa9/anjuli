@@ -1,0 +1,27 @@
+{
+    "title": "धन धन गुरुनानक महाराज!!",
+    "date": "2024-11-15",
+    "language": "Hindi",
+    "number_of_stanzas": 9,
+    "number_of_lines": 38,
+    "first_line": "धर्म को देखा था झुलसते,",
+    "themes": [
+        "spirituality",
+        "equality"
+    ],
+    "theme_hindi": [
+        "आध्यात्मिकता",
+        "समानता"
+    ],
+    "mood": [
+        "reverent",
+        "instructive"
+    ],
+    "mood_hindi": [
+        "श्रद्धालु",
+        "शिक्षाप्रद"
+    ],
+    "meter": "quatrains with consistent end rhymes",
+    "rhyme_scheme": "AABB",
+    "image_prompt": "Black and white, low fidelity sketch style (5x7 inches) of Guru Nanak Dev Ji with rays of light, Indian style"
+}

@@ -1,0 +1,27 @@
+{
+    "title": "किस्मत और कर्म का रिश्ता",
+    "date": "2025-02-25",
+    "language": "Hindi",
+    "number_of_stanzas": 9,
+    "number_of_lines": 36,
+    "first_line": "जन्म हुआ, एक गाँव में,",
+    "themes": [
+        "fate",
+        "karma"
+    ],
+    "theme_hindi": [
+        "भाग्य",
+        "कर्म"
+    ],
+    "mood": [
+        "philosophical",
+        "contemplative"
+    ],
+    "mood_hindi": [
+        "दार्शनिक",
+        "चिंतनशील"
+    ],
+    "meter": "quatrains with consistent end rhymes",
+    "rhyme_scheme": "AABB",
+    "image_prompt": "Black and white, low fidelity sketch style (5x7 inches) of two people born in different circumstances - one in village, one in city, Indian style"
+}

@@ -1,0 +1,27 @@
+{
+    "title": "ओ देश के लाडले",
+    "date": "2024-01-17",
+    "language": "Hindi",
+    "number_of_stanzas": 17,
+    "number_of_lines": 68,
+    "first_line": "ओ देश के लाडले",
+    "themes": [
+        "patriotism",
+        "national pride"
+    ],
+    "theme_hindi": [
+        "देशभक्ति",
+        "राष्ट्रीय गौरव"
+    ],
+    "mood": [
+        "celebratory",
+        "inspirational"
+    ],
+    "mood_hindi": [
+        "उत्सवी",
+        "प्रेरणादायक"
+    ],
+    "meter": "quatrains with varying rhyme patterns",
+    "rhyme_scheme": "AABB with variations",
+    "image_prompt": "Black and white, low fidelity sketch style (5x7 inches) of soldiers hoisting the Indian flag on a mountain, Indian style"
+}

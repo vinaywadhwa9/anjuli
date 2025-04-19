@@ -1,0 +1,27 @@
+{
+    "title": "विश्व मानवाधिकार दिवस",
+    "date": "2024-12-10",
+    "language": "Hindi",
+    "number_of_stanzas": 6,
+    "number_of_lines": 24,
+    "first_line": "बस मुट्ठी भर होते हैं लोग,",
+    "themes": [
+        "human rights",
+        "resistance"
+    ],
+    "theme_hindi": [
+        "मानवाधिकार",
+        "प्रतिरोध"
+    ],
+    "mood": [
+        "assertive",
+        "empowering"
+    ],
+    "mood_hindi": [
+        "आत्मविश्वासी",
+        "सशक्तिकरण"
+    ],
+    "meter": "quatrains with consistent end rhymes",
+    "rhyme_scheme": "AABB",
+    "image_prompt": "Black and white, low fidelity sketch style (5x7 inches) of people standing together with raised fists, Indian style"
+}

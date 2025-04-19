@@ -1,0 +1,27 @@
+{
+    "title": "गौरवशाली वंशज हैं हम",
+    "date": "2024-12-03",
+    "language": "Hindi",
+    "number_of_stanzas": 10,
+    "number_of_lines": 40,
+    "first_line": "जाति- पाँति कोई भेद नहीं है,",
+    "themes": [
+        "unity",
+        "spiritual heritage"
+    ],
+    "theme_hindi": [
+        "एकता",
+        "आध्यात्मिक विरासत"
+    ],
+    "mood": [
+        "proud",
+        "instructive"
+    ],
+    "mood_hindi": [
+        "गौरवान्वित",
+        "शिक्षाप्रद"
+    ],
+    "meter": "quatrains with consistent end rhymes",
+    "rhyme_scheme": "AABB",
+    "image_prompt": "Black and white, low fidelity sketch style (5x7 inches) of diverse people standing together under a Banyan tree, Indian style"
+}

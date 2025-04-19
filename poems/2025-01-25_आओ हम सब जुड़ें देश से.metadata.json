@@ -1,0 +1,31 @@
+{
+    "title": "आओ हम सब जुड़ें देश से",
+    "date": "2025-01-25",
+    "language": "Hindi",
+    "number_of_stanzas": 6,
+    "number_of_lines": 30,
+    "first_line": "आओ हम सब जुड़ें देश से",
+    "themes": [
+        "patriotism",
+        "unity",
+        "service"
+    ],
+    "theme_hindi": [
+        "देशभक्ति",
+        "एकता",
+        "सेवा"
+    ],
+    "mood": [
+        "inspiring",
+        "uplifting",
+        "determined"
+    ],
+    "mood_hindi": [
+        "प्रेरणादायक",
+        "उत्थानशील",
+        "दृढ़"
+    ],
+    "meter": "variable with emphasis on rhythm",
+    "rhyme_scheme": "AABB with variations",
+    "image_prompt": "Black and white, low fidelity sketch style (5x7 inches) of diverse Indians standing together with the national flag"
+}

@@ -1,0 +1,27 @@
+{
+    "title": "हिन्दी दिवस",
+    "date": "2024-01-15",
+    "language": "Hindi",
+    "number_of_stanzas": 6,
+    "number_of_lines": 24,
+    "first_line": "बधाई हो आप सबको,",
+    "themes": [
+        "linguistic pride",
+        "national progress"
+    ],
+    "theme_hindi": [
+        "भाषाई गौरव",
+        "राष्ट्रीय प्रगति"
+    ],
+    "mood": [
+        "celebratory",
+        "patriotic"
+    ],
+    "mood_hindi": [
+        "उत्सवी",
+        "देशभक्तिपूर्ण"
+    ],
+    "meter": "quatrains with consistent rhyme",
+    "rhyme_scheme": "AABB",
+    "image_prompt": "Black and white, low fidelity sketch style (5x7 inches) of a simple outline of India, Indian style"
+}

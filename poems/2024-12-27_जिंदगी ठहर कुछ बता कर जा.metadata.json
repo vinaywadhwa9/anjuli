@@ -1,0 +1,27 @@
+{
+    "title": "जिंदगी ठहर कुछ बता कर जा",
+    "date": "2024-12-27",
+    "language": "Hindi",
+    "number_of_stanzas": 8,
+    "number_of_lines": 32,
+    "first_line": "बिछुड़ जाता है, कोई सगा",
+    "themes": [
+        "loss",
+        "impermanence"
+    ],
+    "theme_hindi": [
+        "विरह",
+        "अनित्यता"
+    ],
+    "mood": [
+        "melancholic",
+        "reflective"
+    ],
+    "mood_hindi": [
+        "उदास",
+        "चिंतनशील"
+    ],
+    "meter": "quatrains with consistent end rhymes",
+    "rhyme_scheme": "AABB",
+    "image_prompt": "Black and white, low fidelity sketch style (5x7 inches) of a person looking at an empty chair with setting sun, Indian style"
+}

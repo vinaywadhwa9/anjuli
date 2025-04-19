@@ -1,0 +1,922 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>अंजुली</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --background: #f0f0f3;
+            --box-shadow: 8px 8px 16px #d1d1d1, -8px -8px 16px #ffffff;
+            --box-shadow-inset: inset 6px 6px 12px #d1d1d1, inset -6px -6px 12px #ffffff;
+            --primary-text: #333;
+            --secondary-text: #666;
+            --accent: #0070f3;
+            --card-bg: #f8f8fa;
+            --tag-bg: rgba(0, 112, 243, 0.1);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background-color: var(--background);
+            color: var(--primary-text);
+            line-height: 1.6;
+            padding: 0;
+            margin: 0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+            flex: 1;
+        }
+
+        header {
+            margin-bottom: 2rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .title-container {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .author-avatar {
+            width: 65px;
+            height: 65px;
+            border-radius: 50%;
+            box-shadow: var(--box-shadow);
+            object-fit: cover;
+            transition: all 0.3s ease;
+            border: 3px solid white;
+        }
+
+        .author-avatar:hover {
+            transform: scale(1.05);
+            box-shadow: 10px 10px 20px #d1d1d1, -10px -10px 20px #ffffff;
+        }
+
+        header h1 {
+            font-size: 3rem;
+            font-weight: 700;
+            margin: 0;
+            background: linear-gradient(135deg, #333, #666);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: -0.5px;
+        }
+
+        .filter-container {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin: 1.5rem 0;
+        }
+
+        .search-box {
+            flex: 1;
+            max-width: 400px;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 1rem 1.5rem;
+            border-radius: 50px;
+            border: none;
+            background: var(--background);
+            box-shadow: var(--box-shadow-inset);
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            color: var(--primary-text);
+        }
+
+        .search-box input:focus {
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(0, 112, 243, 0.3), var(--box-shadow-inset);
+        }
+
+        .filter-dropdown select {
+            padding: 1rem 1.5rem;
+            border-radius: 50px;
+            border: none;
+            background: var(--background);
+            box-shadow: var(--box-shadow);
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            color: var(--primary-text);
+            -webkit-appearance: none;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23333' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 1rem center;
+            padding-right: 2.5rem;
+        }
+
+        .filter-dropdown select:focus {
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(0, 112, 243, 0.3), var(--box-shadow);
+        }
+
+        .poems-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .poem-card {
+            background: var(--card-bg);
+            border-radius: 16px;
+            box-shadow: var(--box-shadow);
+            overflow: hidden;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+
+        .poem-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 10px 10px 20px #d1d1d1, -10px -10px 20px #ffffff;
+        }
+
+        .poem-card:active {
+            transform: scale(0.98);
+            box-shadow: var(--box-shadow-inset);
+        }
+
+        .poem-image-container {
+            width: 100%;
+            aspect-ratio: 5/7;
+            position: relative;
+            overflow: hidden;
+            background-color: #f0f0f0;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .poem-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: opacity 0.3s ease;
+            background-color: var(--card-bg);
+        }
+
+        .poem-content {
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+        }
+
+        .poem-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            color: var(--primary-text);
+        }
+
+        .poem-date {
+            color: var(--secondary-text);
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+
+        .poem-preview {
+            font-size: 1rem;
+            color: var(--secondary-text);
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            margin-bottom: 1rem;
+        }
+
+        .tags-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: auto;
+        }
+
+        .tag {
+            background: var(--tag-bg);
+            color: var(--accent);
+            padding: 0.25rem 0.75rem;
+            border-radius: 50px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 100;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(5px);
+            overflow-y: auto;
+        }
+
+        .modal-content {
+            background: var(--background);
+            margin: 5% auto;
+            width: 90%;
+            max-width: 900px;
+            border-radius: 24px;
+            box-shadow: var(--box-shadow);
+            position: relative;
+        }
+
+        .close-modal {
+            position: absolute;
+            right: 1.5rem;
+            top: 1.5rem;
+            font-size: 2rem;
+            color: var(--secondary-text);
+            cursor: pointer;
+            z-index: 10;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            background: var(--background);
+            box-shadow: var(--box-shadow);
+            transition: all 0.3s ease;
+        }
+
+        .close-modal:hover {
+            transform: rotate(90deg);
+            color: var(--accent);
+        }
+
+        .modal-body {
+            padding: 2.5rem;
+        }
+
+        .poem-details {
+            display: flex;
+            gap: 2rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+
+        #modal-image {
+            width: 250px;
+            aspect-ratio: 5/7;
+            height: auto;
+            object-fit: cover;
+            border-radius: 16px;
+            box-shadow: var(--box-shadow);
+            transition: opacity 0.3s ease;
+        }
+
+        .poem-info {
+            flex: 1;
+            min-width: 250px;
+        }
+
+        #modal-title {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            font-weight: 700;
+        }
+
+        #modal-date {
+            font-size: 1rem;
+            color: var(--secondary-text);
+            margin-bottom: 1.5rem;
+        }
+
+        #modal-text {
+            font-family: 'Inter', sans-serif;
+            white-space: pre-wrap;
+            line-height: 1.8;
+            font-size: 1.25rem;
+            text-align: center;
+            background: var(--card-bg);
+            padding: 2rem;
+            border-radius: 16px;
+            box-shadow: var(--box-shadow-inset);
+        }
+
+        #loading {
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: 2rem;
+            font-size: 1.2rem;
+            color: var(--secondary-text);
+        }
+
+        footer {
+            text-align: center;
+            padding: 1.5rem;
+            background-color: var(--background);
+            color: var(--secondary-text);
+            box-shadow: 0 -5px 15px rgba(0, 0, 0, 0.05);
+        }
+
+        .error {
+            padding: 1.5rem;
+            border-radius: 16px;
+            background-color: #fff5f5;
+            color: #e53e3e;
+            border-left: 5px solid #e53e3e;
+            margin: 1rem 0;
+            font-size: 1.1rem;
+            line-height: 1.6;
+        }
+
+        .error ul {
+            margin-top: 0.5rem;
+            margin-left: 1.5rem;
+        }
+
+        .no-results {
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: 3rem;
+            font-size: 1.2rem;
+            color: var(--secondary-text);
+            background: var(--card-bg);
+            border-radius: 16px;
+            box-shadow: var(--box-shadow);
+        }
+
+        @media (max-width: 1200px) {
+            .poems-container {
+                grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            }
+        }
+
+        @media (max-width: 768px) {
+            .poems-container {
+                grid-template-columns: 1fr;
+            }
+
+            .container {
+                padding: 1rem;
+            }
+
+            header h1 {
+                font-size: 2.2rem;
+            }
+
+            .poem-details {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+            }
+
+            #modal-image {
+                width: 200px;
+                height: 280px;
+            }
+
+            #modal-title {
+                font-size: 1.8rem;
+            }
+
+            .modal-content {
+                width: 95%;
+                margin: 5% auto;
+            }
+
+            .modal-body {
+                padding: 1.5rem;
+            }
+
+            #modal-text {
+                padding: 1.5rem;
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <div class="title-container">
+                <img src="img/avatar.jpg" alt="Author" class="author-avatar">
+                <h1>अंजुली</h1>
+            </div>
+            <div class="filter-container">
+                <div class="search-box">
+                    <input type="text" id="search-input" placeholder="Search poems...">
+                </div>
+                <div class="filter-dropdown">
+                    <select id="theme-filter">
+                        <option value="">All Themes</option>
+                    </select>
+                </div>
+            </div>
+        </header>
+
+        <main class="poems-container" id="poems-container">
+            <div id="loading">Loading poems... Please wait</div>
+        </main>
+
+        <div id="poem-modal" class="modal">
+            <div class="modal-content">
+                <span class="close-modal">&times;</span>
+                <div class="modal-body">
+                    <div class="poem-details">
+                        <img id="modal-image" src="img/placeholder.jpg" alt="Poem illustration">
+                        <div class="poem-info">
+                            <h2 id="modal-title"></h2>
+                            <p id="modal-date"></p>
+                            <div id="modal-tags" class="tags-container"></div>
+                        </div>
+                    </div>
+                    <pre id="modal-text"></pre>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>© 2025 अंजुली</p>
+    </footer>
+
+    <script>
+        // Global variables
+        let allPoems = [];
+        let uniqueThemesHindi = new Set();
+
+        // Wait for DOM to be fully loaded
+        document.addEventListener('DOMContentLoaded', function () {
+            // Logging utility
+            function log(message) {
+                console.log(`[Poetry App] ${message}`);
+            }
+
+            // DOM Elements - with null safety checks
+            const poemsContainer = document.getElementById('poems-container') || document.createElement('div');
+            const searchInput = document.getElementById('search-input');
+            const themeFilter = document.getElementById('theme-filter');
+            const modal = document.getElementById('poem-modal');
+            const modalTitle = document.getElementById('modal-title');
+            const modalDate = document.getElementById('modal-date');
+            const modalImage = document.getElementById('modal-image');
+            const modalText = document.getElementById('modal-text');
+            const modalTags = document.getElementById('modal-tags');
+            const closeModalBtn = document.querySelector('.close-modal');
+
+            // Display a loading message
+            if (poemsContainer) {
+                poemsContainer.innerHTML = '<div class="loading">Loading poems...</div>';
+            }
+
+            // Initialize the application
+            initApp();
+
+            // Main application initialization
+            async function initApp() {
+                const logElement = document.getElementById('log');
+
+                // Utility function for logging
+                function log(message) {
+                    console.log(message);
+                    if (logElement) {
+                        logElement.textContent += message + '\n';
+                    }
+                }
+
+                try {
+                    log('Initializing app...');
+                    const poemsContainer = document.getElementById('poems-container') || document.createElement('div');
+                    const searchInput = document.getElementById('search-input');
+                    const themeFilter = document.getElementById('theme-filter');
+                    const modal = document.getElementById('modal');
+                    const modalTitle = document.getElementById('modal-title');
+                    const modalDate = document.getElementById('modal-date');
+                    const modalImage = document.getElementById('modal-image');
+                    const modalText = document.getElementById('modal-text');
+                    const modalTags = document.getElementById('modal-tags');
+                    const closeModalBtn = document.querySelector('.close-modal');
+
+                    // Load poems from the 'poems' folder
+                    async function loadPoems() {
+                        try {
+                            // Load poems from the single poems folder
+                            log('Loading poems from poems folder...');
+                            const poems = await loadPoemsFromFolder('poems');
+
+                            allPoems = poems;
+                            log(`Loaded ${allPoems.length} poems`);
+
+                            // Sort poems by date (newest first)
+                            allPoems.sort((a, b) => {
+                                const dateA = new Date(a.date);
+                                const dateB = new Date(b.date);
+                                return dateB - dateA; // Reverse chronological order
+                            });
+
+                            // Extract unique themes (for the filter dropdown)
+                            const themes = [...new Set(
+                                allPoems.flatMap(poem => poem.themes || [])
+                            )].filter(Boolean);
+
+                            // Populate theme filter if it exists
+                            if (themeFilter) {
+                                let themeOptions = '<option value="">All Themes</option>';
+                                themes.forEach(theme => {
+                                    themeOptions += `<option value="${theme}">${theme}</option>`;
+                                });
+                                themeFilter.innerHTML = themeOptions;
+                            }
+
+                            // Display poems in container
+                            displayPoems(allPoems);
+                        } catch (error) {
+                            log(`Error loading poems: ${error.message}`);
+                            poemsContainer.innerHTML = '<div class="error">Failed to load poems. Please try again later.</div>';
+                        }
+                    }
+
+                    // Load the poems
+                    await loadPoems();
+
+                    // Set up event listeners for search and theme filter
+                    if (searchInput) {
+                        log('Setting up search input event listener');
+                        searchInput.addEventListener('input', filterPoems);
+                    } else {
+                        log('Warning: Search input element not found');
+                    }
+
+                    if (themeFilter) {
+                        log('Setting up theme filter event listener');
+                        themeFilter.addEventListener('change', filterPoems);
+                    } else {
+                        log('Warning: Theme filter element not found');
+                    }
+
+                    if (closeModalBtn) {
+                        closeModalBtn.addEventListener('click', closeModal);
+                    }
+
+                    if (modal) {
+                        window.addEventListener('click', (event) => {
+                            if (event.target === modal) {
+                                closeModal();
+                            }
+                        });
+                    }
+
+                    window.addEventListener('keydown', (event) => {
+                        if (event.key === 'Escape' && modal && modal.style.display === 'block') {
+                            closeModal();
+                        }
+                    });
+
+                    log('Application initialized successfully');
+                } catch (error) {
+                    log(`Critical error initializing application: ${error.message}`);
+                    if (poemsContainer) {
+                        poemsContainer.innerHTML = `<div class="error">Error loading poems. Please try again later. Details: ${error.message}</div>`;
+                    }
+                }
+            }
+
+            // Function to load poems from a specific folder
+            async function loadPoemsFromFolder(folderPath) {
+                try {
+                    // Scan the folder for poem files
+                    log("Loading poems directly from directory listing");
+
+                    // Get all .txt files - add cache-busting parameter
+                    const folderResponse = await fetch(`${folderPath}/?nocache=${Date.now()}`);
+                    if (!folderResponse.ok) {
+                        // If we can't list directory contents, we'll return empty array
+                        log("Could not access poems folder");
+                        return [];
+                    }
+
+                    // Get all .txt files
+                    const files = await folderResponse.text();
+                    const matches = files.match(/href="([^"]+\.txt)"/g) || [];
+                    log(`Found ${matches.length} potential poem files`);
+
+                    return await Promise.all(matches.map(async (match) => {
+                        const filename = match.replace(/href="([^"]+)"/, '$1');
+                        if (!filename.endsWith('.txt') || filename.includes('.metadata.')) {
+                            return null; // Skip non-poem files
+                        }
+
+                        // Skip any test poems
+                        if (filename.toLowerCase().includes('test') || filename.includes('टेस्ट')) {
+                            log(`Skipping test poem: ${filename}`);
+                            return null;
+                        }
+
+                        try {
+                            // Extract date and title from filename
+                            const filenameMatch = filename.match(/(\d{4}-\d{2}-\d{2})_(.+)\.txt$/);
+                            if (!filenameMatch) {
+                                log(`Could not parse filename: ${filename}`);
+                                return null;
+                            }
+
+                            const date = filenameMatch[1];
+                            let title = filenameMatch[2];
+
+                            // Try to get title from metadata instead of filename
+                            try {
+                                const metadataResponse = await fetch(`${folderPath}/${filename.replace('.txt', '.metadata.json')}?nocache=${Date.now()}`);
+                                if (metadataResponse.ok) {
+                                    const metadata = await metadataResponse.json();
+                                    if (metadata.title) {
+                                        title = metadata.title;
+                                        log(`Using title from metadata: ${title}`);
+                                    }
+                                }
+                            } catch (metadataError) {
+                                log(`No metadata found or error: ${metadataError.message}`);
+                            }
+
+                            // Load poem text with cache-busting
+                            const poemResponse = await fetch(`${folderPath}/${filename}?nocache=${Date.now()}`);
+                            if (!poemResponse.ok) {
+                                log(`Could not load poem text: ${filename}`);
+                                return null;
+                            }
+                            const poemText = await poemResponse.text();
+
+                            // Try to load metadata for themes
+                            let themes = [];
+                            try {
+                                const metadataResponse = await fetch(`${folderPath}/${filename.replace('.txt', '.metadata.json')}?nocache=${Date.now()}`);
+                                if (metadataResponse.ok) {
+                                    const metadata = await metadataResponse.json();
+                                    themes = metadata.themes || [];
+                                }
+                            } catch (error) {
+                                log(`Warning: No metadata found for ${filename}`);
+                            }
+
+                            // Skip any test poems based on content
+                            if (title.toLowerCase().includes('test') || title.includes('टेस्ट')) {
+                                log(`Skipping test poem by title: ${title}`);
+                                return null;
+                            }
+
+                            if (date.includes('2025-04-20')) {
+                                log(`Skipping poem with test date: ${date}`);
+                                return null;
+                            }
+
+                            // Check if image exists
+                            const imagePath = `${folderPath}/${filename.replace('.txt', '.png')}?nocache=${Date.now()}`;
+
+                            return {
+                                title,
+                                text: poemText,
+                                date,
+                                image: imagePath,
+                                themes
+                            };
+                        } catch (error) {
+                            log(`Error processing poem ${filename}: ${error.message}`);
+                            return null;
+                        }
+                    })).then(poems => poems.filter(Boolean));
+                } catch (error) {
+                    log(`Error loading from folder ${folderPath}: ${error.message}`);
+                    return [];
+                }
+            }
+
+            // Function to display poems in the container
+            function displayPoems(poems) {
+                if (!poemsContainer) return;
+
+                if (poems.length === 0) {
+                    poemsContainer.innerHTML = '<div class="no-results">No poems found matching your filters</div>';
+                    return;
+                }
+
+                poemsContainer.innerHTML = '';
+
+                poems.forEach(poem => {
+                    const card = document.createElement('div');
+                    card.className = 'poem-card';
+                    card.addEventListener('click', () => openPoemModal(poem));
+
+                    // Image container
+                    const imageContainer = document.createElement('div');
+                    imageContainer.className = 'poem-image-container';
+
+                    const image = document.createElement('img');
+                    image.className = 'poem-image';
+                    image.src = poem.image || 'img/placeholder.jpg';
+                    image.alt = poem.title || 'Untitled poem';
+                    image.onerror = function () {
+                        this.src = 'img/placeholder.jpg';
+                    };
+
+                    // Card content with title and date
+                    const content = document.createElement('div');
+                    content.className = 'poem-content';
+
+                    const title = document.createElement('h3');
+                    title.className = 'poem-title';
+                    title.textContent = poem.title || 'Untitled';
+
+                    const date = document.createElement('p');
+                    date.className = 'poem-date';
+                    date.textContent = formatDate(poem.date);
+
+                    // Preview text - first lines
+                    const preview = document.createElement('p');
+                    preview.className = 'poem-preview';
+                    const previewText = poem.text.split('\n').slice(0, 1).join(' ');
+                    preview.textContent = previewText.length > 50 ? previewText.substring(0, 50) + '...' : previewText;
+
+                    // Tags container for themes
+                    const tagsContainer = document.createElement('div');
+                    tagsContainer.className = 'tags-container';
+
+                    if (poem.themes && poem.themes.length > 0) {
+                        poem.themes.forEach(theme => {
+                            const tag = document.createElement('span');
+                            tag.className = 'tag';
+                            tag.textContent = theme;
+                            tagsContainer.appendChild(tag);
+                        });
+                    }
+
+                    // Append elements
+                    imageContainer.appendChild(image);
+                    card.appendChild(imageContainer);
+
+                    content.appendChild(title);
+                    content.appendChild(date);
+                    content.appendChild(preview);
+                    content.appendChild(tagsContainer);
+
+                    card.appendChild(content);
+                    poemsContainer.appendChild(card);
+                });
+            }
+
+            // Format date for display
+            function formatDate(dateString) {
+                try {
+                    const date = new Date(dateString);
+                    return date.toLocaleDateString('en-US', {
+                        year: 'numeric',
+                        month: 'long',
+                        day: 'numeric'
+                    });
+                } catch (e) {
+                    return dateString;
+                }
+            }
+
+            // Function to open poem modal with the selected poem
+            function openPoemModal(poem) {
+                if (modal && modalTitle && modalText) {
+                    modalTitle.textContent = poem.title || 'Untitled';
+
+                    if (modalDate) {
+                        const formattedDate = formatDate(poem.date);
+                        modalDate.textContent = formattedDate;
+                    }
+
+                    modalText.textContent = poem.text || '';
+
+                    // Handle image
+                    if (modalImage) {
+                        modalImage.src = poem.image || 'img/placeholder.jpg';
+                        modalImage.onerror = function () {
+                            this.src = 'img/placeholder.jpg';
+                        };
+                    }
+
+                    // Handle tags
+                    if (modalTags && poem.themes && poem.themes.length > 0) {
+                        modalTags.innerHTML = '';
+                        poem.themes.forEach(theme => {
+                            const tag = document.createElement('span');
+                            tag.className = 'tag';
+                            tag.textContent = theme;
+                            modalTags.appendChild(tag);
+                        });
+                        modalTags.style.display = 'flex';
+                    } else if (modalTags) {
+                        modalTags.style.display = 'none';
+                    }
+
+                    modal.style.display = 'block';
+                    document.body.style.overflow = 'hidden';
+                }
+            }
+
+            // Close the poem modal
+            function closeModal() {
+                if (!modal) return;
+                modal.style.display = 'none';
+                document.body.style.overflow = ''; // Restore scrolling
+            }
+
+            // Filter poems based on search input and selected theme
+            function filterPoems() {
+                log('Filtering poems...');
+                if (!allPoems || !Array.isArray(allPoems)) {
+                    log('Error: allPoems is not an array or is undefined');
+                    return;
+                }
+
+                log(`Filtering ${allPoems.length} poems`);
+
+                const searchText = searchInput ? searchInput.value.toLowerCase() : '';
+                const selectedTheme = themeFilter ? themeFilter.value : '';
+
+                log(`Search: "${searchText}", Theme: "${selectedTheme}"`);
+
+                const filteredPoems = allPoems.filter(poem => {
+                    // Check if poem has required properties
+                    if (!poem || !poem.title) {
+                        log('Warning: Found invalid poem in collection');
+                        return false;
+                    }
+
+                    // Search text filter
+                    const titleMatch = poem.title.toLowerCase().includes(searchText);
+                    const textMatch = poem.text && poem.text.toLowerCase().includes(searchText);
+                    const searchMatches = searchText === '' || titleMatch || textMatch;
+
+                    // Theme filter
+                    const themeMatches = selectedTheme === '' ||
+                        (poem.themes && poem.themes.includes(selectedTheme));
+
+                    return searchMatches && themeMatches;
+                });
+
+                log(`Filtered to ${filteredPoems.length} poems`);
+                displayPoems(filteredPoems);
+            }
+
+            // Add a simple function at the bottom of the script to clear browser cache
+            window.clearCacheAndReload = function () {
+                localStorage.clear();
+                sessionStorage.clear();
+                caches.keys().then(names => {
+                    for (let name of names) caches.delete(name);
+                });
+                window.location.reload(true);
+            };
+
+            // Add a button to clear cache
+            document.addEventListener('DOMContentLoaded', function () {
+                const header = document.querySelector('header');
+                if (header) {
+                    const clearButton = document.createElement('button');
+                    clearButton.textContent = 'Clear Cache & Reload';
+                    clearButton.style.margin = '10px auto';
+                    clearButton.style.padding = '8px 16px';
+                    clearButton.style.borderRadius = '20px';
+                    clearButton.style.cursor = 'pointer';
+                    clearButton.style.background = 'var(--background)';
+                    clearButton.style.boxShadow = 'var(--box-shadow)';
+                    clearButton.style.border = 'none';
+                    clearButton.onclick = window.clearCacheAndReload;
+                    header.appendChild(clearButton);
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>

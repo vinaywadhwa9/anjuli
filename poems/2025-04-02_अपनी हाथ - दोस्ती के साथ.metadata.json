@@ -1,0 +1,27 @@
+{
+    "title": "अपनी हाथ - दोस्ती के साथ",
+    "date": "2025-04-02",
+    "language": "Hindi",
+    "number_of_stanzas": 8,
+    "number_of_lines": 32,
+    "first_line": "आज, शाम अलग होगी,",
+    "themes": [
+        "friendship",
+        "joy"
+    ],
+    "theme_hindi": [
+        "मित्रता",
+        "आनंद"
+    ],
+    "mood": [
+        "cheerful",
+        "nostalgic"
+    ],
+    "mood_hindi": [
+        "प्रफुल्लित",
+        "नॉस्टैल्जिक"
+    ],
+    "meter": "quatrains with consistent end rhymes",
+    "rhyme_scheme": "AABB",
+    "image_prompt": "Black and white, low fidelity sketch style (5x7 inches) of friends laughing together in the evening, Indian style"
+}

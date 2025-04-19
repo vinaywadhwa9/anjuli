@@ -1,0 +1,27 @@
+{
+    "title": "माँ का स्वरूप",
+    "date": "2024-01-19",
+    "language": "Hindi",
+    "number_of_stanzas": 8,
+    "number_of_lines": 32,
+    "first_line": "मन भटक रहा है माँ",
+    "themes": [
+        "mother's love",
+        "grief"
+    ],
+    "theme_hindi": [
+        "मातृ प्रेम",
+        "शोक"
+    ],
+    "mood": [
+        "melancholic",
+        "yearning"
+    ],
+    "mood_hindi": [
+        "उदास",
+        "तरसता हुआ"
+    ],
+    "meter": "quatrains with varying rhyme patterns",
+    "rhyme_scheme": "ABCB with variations",
+    "image_prompt": "Black and white, low fidelity sketch style (5x7 inches) of a person looking at mother's photograph, Indian style"
+}

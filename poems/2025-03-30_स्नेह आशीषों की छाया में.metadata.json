@@ -1,0 +1,27 @@
+{
+    "title": "स्नेह आशीषों की छाया में",
+    "date": "2025-03-30",
+    "language": "Hindi",
+    "number_of_stanzas": 6,
+    "number_of_lines": 24,
+    "first_line": "वर्ष का पावन प्रथम दिन,",
+    "themes": [
+        "maternal love",
+        "divine blessings"
+    ],
+    "theme_hindi": [
+        "मातृ प्रेम",
+        "दैवीय आशीर्वाद"
+    ],
+    "mood": [
+        "devotional",
+        "grateful"
+    ],
+    "mood_hindi": [
+        "भक्तिमय",
+        "आभारी"
+    ],
+    "meter": "quatrains with consistent end rhymes",
+    "rhyme_scheme": "AABB",
+    "image_prompt": "Black and white, low fidelity sketch style (5x7 inches) of Mother Goddess blessing devotees, Indian style"
+}

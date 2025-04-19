@@ -1,0 +1,27 @@
+{
+    "title": "दिखा रहे अपनी लाचारी?",
+    "date": "2025-04-09",
+    "language": "Hindi",
+    "number_of_stanzas": 7,
+    "number_of_lines": 28,
+    "first_line": "दे दो मुझको कृपा अपनी,",
+    "themes": [
+        "faith",
+        "selflessness"
+    ],
+    "theme_hindi": [
+        "आस्था",
+        "निस्वार्थता"
+    ],
+    "mood": [
+        "reflective",
+        "instructive"
+    ],
+    "mood_hindi": [
+        "चिंतनशील",
+        "शिक्षाप्रद"
+    ],
+    "meter": "quatrains with consistent end rhymes",
+    "rhyme_scheme": "AABB",
+    "image_prompt": "Black and white, low fidelity sketch style (5x7 inches) of people praying at a temple with a child smiling nearby, Indian style"
+}

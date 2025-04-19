@@ -1,0 +1,27 @@
+{
+    "title": "कष्ट से मुक्ति मिला",
+    "date": "2024-12-11",
+    "language": "Hindi",
+    "number_of_stanzas": 9,
+    "number_of_lines": 36,
+    "first_line": "चलने की कोशिश में लोग,",
+    "themes": [
+        "old age",
+        "mortality"
+    ],
+    "theme_hindi": [
+        "वृद्धावस्था",
+        "मृत्यु"
+    ],
+    "mood": [
+        "contemplative",
+        "melancholic"
+    ],
+    "mood_hindi": [
+        "चिंतनशील",
+        "उदास"
+    ],
+    "meter": "quatrains with consistent end rhymes",
+    "rhyme_scheme": "AABB",
+    "image_prompt": "Black and white, low fidelity sketch style (5x7 inches) of an elderly person sitting alone by a window, Indian style"
+}

@@ -1,0 +1,27 @@
+{
+    "title": "अलविदा वर्ष जो बीत गया...",
+    "date": "2024-12-31",
+    "language": "Hindi",
+    "number_of_stanzas": 1,
+    "number_of_lines": 16,
+    "first_line": "बीत गया जो पिछला साल,",
+    "themes": [
+        "national pride",
+        "achievements"
+    ],
+    "theme_hindi": [
+        "राष्ट्रीय गौरव",
+        "उपलब्धियां"
+    ],
+    "mood": [
+        "celebratory",
+        "patriotic"
+    ],
+    "mood_hindi": [
+        "उत्सवी",
+        "देशभक्तिपूर्ण"
+    ],
+    "meter": "rhymed couplets",
+    "rhyme_scheme": "AA BB CC",
+    "image_prompt": "Black and white, low fidelity sketch style (5x7 inches) of Ram Mandir, Indian style"
+}

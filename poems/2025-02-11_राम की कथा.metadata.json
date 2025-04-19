@@ -1,0 +1,27 @@
+{
+    "title": "राम की कथा",
+    "date": "2025-02-11",
+    "language": "Hindi",
+    "number_of_stanzas": 8,
+    "number_of_lines": 32,
+    "first_line": "बचपन से सुनते आये हैं,",
+    "themes": [
+        "spirituality",
+        "life lessons"
+    ],
+    "theme_hindi": [
+        "आध्यात्मिकता",
+        "जीवन के सबक"
+    ],
+    "mood": [
+        "reverent",
+        "contemplative"
+    ],
+    "mood_hindi": [
+        "श्रद्धालु",
+        "चिंतनशील"
+    ],
+    "meter": "quatrains with consistent end rhymes",
+    "rhyme_scheme": "AABB",
+    "image_prompt": "Black and white, low fidelity sketch style (5x7 inches) of Lord Ram with a bow and arrow, Indian style"
+}

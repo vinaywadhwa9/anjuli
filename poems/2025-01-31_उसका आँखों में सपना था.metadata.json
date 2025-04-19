@@ -1,0 +1,27 @@
+{
+    "title": "उसका आँखों में सपना था",
+    "date": "2025-01-31",
+    "language": "Hindi",
+    "number_of_stanzas": 7,
+    "number_of_lines": 28,
+    "first_line": "अंग्रेजी हुकूमत के आगे",
+    "themes": [
+        "freedom struggle",
+        "national unity"
+    ],
+    "theme_hindi": [
+        "स्वतंत्रता संघर्ष",
+        "राष्ट्रीय एकता"
+    ],
+    "mood": [
+        "patriotic",
+        "reverent"
+    ],
+    "mood_hindi": [
+        "देशभक्तिपूर्ण",
+        "श्रद्धालु"
+    ],
+    "meter": "quatrains with consistent end rhymes",
+    "rhyme_scheme": "AABB",
+    "image_prompt": "Black and white, low fidelity sketch style (5x7 inches) of Mahatma Gandhi leading a peaceful march, Indian style"
+}

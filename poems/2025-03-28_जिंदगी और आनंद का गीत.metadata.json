@@ -1,0 +1,27 @@
+{
+    "title": "जिंदगी और आनंद का गीत",
+    "date": "2025-03-28",
+    "language": "Hindi",
+    "number_of_stanzas": 7,
+    "number_of_lines": 28,
+    "first_line": "एक गीत नया अब गाना है",
+    "themes": [
+        "joy of living",
+        "positive attitude"
+    ],
+    "theme_hindi": [
+        "जीवन का आनंद",
+        "सकारात्मक दृष्टिकोण"
+    ],
+    "mood": [
+        "uplifting",
+        "inspirational"
+    ],
+    "mood_hindi": [
+        "उत्थान",
+        "प्रेरणादायक"
+    ],
+    "meter": "quatrains with consistent end rhymes",
+    "rhyme_scheme": "AABB",
+    "image_prompt": "Black and white, low fidelity sketch style (5x7 inches) of a person singing joyfully, Indian style"
+}

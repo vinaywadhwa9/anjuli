@@ -1,0 +1,27 @@
+{
+    "title": "नीले सागर के तट पर",
+    "date": "2024-12-28",
+    "language": "Hindi",
+    "number_of_stanzas": 10,
+    "number_of_lines": 40,
+    "first_line": "ज्यादा शिक्षा लेकर भूल गये,",
+    "themes": [
+        "cultural roots",
+        "modern lifestyle"
+    ],
+    "theme_hindi": [
+        "सांस्कृतिक जड़ें",
+        "आधुनिक जीवन शैली"
+    ],
+    "mood": [
+        "critical",
+        "cautionary"
+    ],
+    "mood_hindi": [
+        "आलोचनात्मक",
+        "सावधान करने वाला"
+    ],
+    "meter": "quatrains with consistent end rhymes",
+    "rhyme_scheme": "AABB",
+    "image_prompt": "Black and white, low fidelity sketch style (5x7 inches) of a person standing between modern city and traditional village, Indian style"
+}

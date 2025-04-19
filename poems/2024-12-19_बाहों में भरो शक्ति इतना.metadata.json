@@ -1,0 +1,27 @@
+{
+    "title": "बाहों में भरो शक्ति इतना",
+    "date": "2024-12-19",
+    "language": "Hindi",
+    "number_of_stanzas": 9,
+    "number_of_lines": 44,
+    "first_line": "जो उतर गए हैं, सड़कों पर",
+    "themes": [
+        "strength",
+        "resilience"
+    ],
+    "theme_hindi": [
+        "शक्ति",
+        "लचीलापन"
+    ],
+    "mood": [
+        "determined",
+        "critical"
+    ],
+    "mood_hindi": [
+        "दृढ़निश्चयी",
+        "आलोचनात्मक"
+    ],
+    "meter": "quatrains with alternating rhythm",
+    "rhyme_scheme": "AABB with variations",
+    "image_prompt": "Black and white, low fidelity sketch style (5x7 inches) of a strong arm raised in determination against a backdrop of national symbols, Indian style"
+}

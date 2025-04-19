@@ -1,0 +1,27 @@
+{
+    "title": "लहरों पे समुद्र के",
+    "date": "2024-12-15",
+    "language": "Hindi",
+    "number_of_stanzas": 9,
+    "number_of_lines": 36,
+    "first_line": "बात वही एक होती है,",
+    "themes": [
+        "perseverance",
+        "perspective"
+    ],
+    "theme_hindi": [
+        "दृढ़ता",
+        "दृष्टिकोण"
+    ],
+    "mood": [
+        "motivational",
+        "philosophical"
+    ],
+    "mood_hindi": [
+        "प्रेरणादायक",
+        "दार्शनिक"
+    ],
+    "meter": "quatrains with consistent end rhymes",
+    "rhyme_scheme": "AABB",
+    "image_prompt": "Black and white, low fidelity sketch style (5x7 inches) of a person standing resolutely against ocean waves, Indian style"
+}

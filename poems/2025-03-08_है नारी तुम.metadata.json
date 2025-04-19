@@ -1,0 +1,27 @@
+{
+    "title": "है नारी तुम",
+    "date": "2025-03-08",
+    "language": "Hindi",
+    "number_of_stanzas": 5,
+    "number_of_lines": 20,
+    "first_line": "मधुरतम जीवन का आधार हो",
+    "themes": [
+        "feminine divinity",
+        "women empowerment"
+    ],
+    "theme_hindi": [
+        "स्त्री दिव्यता",
+        "नारी सशक्तिकरण"
+    ],
+    "mood": [
+        "reverent",
+        "celebratory"
+    ],
+    "mood_hindi": [
+        "श्रद्धालु",
+        "उत्सवपूर्ण"
+    ],
+    "meter": "quatrains with consistent end rhymes",
+    "rhyme_scheme": "AAAA BBBB",
+    "image_prompt": "Black and white, low fidelity sketch style (5x7 inches) of a mother with child, Indian style"
+}

@@ -1,0 +1,380 @@
+:root {
+    --background: #f0f0f3;
+    --box-shadow: 8px 8px 16px #d1d1d1, -8px -8px 16px #ffffff;
+    --box-shadow-inset: inset 6px 6px 12px #d1d1d1, inset -6px -6px 12px #ffffff;
+    --primary-text: #333;
+    --secondary-text: #666;
+    --accent: #0070f3;
+    --card-bg: #f8f8fa;
+    --tag-bg: rgba(0, 112, 243, 0.1);
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    background-color: var(--background);
+    color: var(--primary-text);
+    line-height: 1.6;
+    padding: 0;
+    margin: 0;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem;
+    flex: 1;
+}
+
+/* Header Styles */
+header {
+    margin-bottom: 2rem;
+    text-align: center;
+}
+
+header h1 {
+    font-size: 3rem;
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+    background: linear-gradient(135deg, #333, #666);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    letter-spacing: -0.5px;
+}
+
+.filter-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin: 1.5rem 0;
+}
+
+.search-box {
+    flex: 1;
+    max-width: 400px;
+}
+
+.search-box input {
+    width: 100%;
+    padding: 1rem 1.5rem;
+    border-radius: 50px;
+    border: none;
+    background: var(--background);
+    box-shadow: var(--box-shadow-inset);
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    color: var(--primary-text);
+}
+
+.search-box input:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(0, 112, 243, 0.3), var(--box-shadow-inset);
+}
+
+.filter-dropdown select {
+    padding: 1rem 1.5rem;
+    border-radius: 50px;
+    border: none;
+    background: var(--background);
+    box-shadow: var(--box-shadow);
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    color: var(--primary-text);
+    -webkit-appearance: none;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23333' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 1rem center;
+    padding-right: 2.5rem;
+}
+
+.filter-dropdown select:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(0, 112, 243, 0.3), var(--box-shadow);
+}
+
+/* Poems Container */
+.poems-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 2rem;
+    margin-top: 2rem;
+}
+
+.poem-card {
+    background: var(--card-bg);
+    border-radius: 16px;
+    box-shadow: var(--box-shadow);
+    overflow: hidden;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    position: relative;
+}
+
+.poem-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 10px 10px 20px #d1d1d1, -10px -10px 20px #ffffff;
+}
+
+.poem-card:active {
+    transform: scale(0.98);
+    box-shadow: var(--box-shadow-inset);
+}
+
+.poem-image-container {
+    width: 100%;
+    height: 200px;
+    position: relative;
+    overflow: hidden;
+    background-color: #f0f0f0;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.poem-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: opacity 0.3s ease;
+    background-color: var(--card-bg);
+}
+
+.poem-content {
+    padding: 1.5rem;
+}
+
+.poem-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    color: var(--primary-text);
+}
+
+.poem-date {
+    color: var(--secondary-text);
+    font-size: 0.9rem;
+    margin-bottom: 1rem;
+}
+
+.poem-preview {
+    font-size: 1rem;
+    color: var(--secondary-text);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    margin-bottom: 1rem;
+}
+
+.tags-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: auto;
+}
+
+.tag {
+    background: var(--tag-bg);
+    color: var(--accent);
+    padding: 0.25rem 0.75rem;
+    border-radius: 50px;
+    font-size: 0.8rem;
+    font-weight: 500;
+}
+
+/* Modal */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 100;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(5px);
+    overflow-y: auto;
+}
+
+.modal-content {
+    background: var(--background);
+    margin: 5% auto;
+    width: 90%;
+    max-width: 900px;
+    border-radius: 24px;
+    box-shadow: var(--box-shadow);
+    position: relative;
+}
+
+.close-modal {
+    position: absolute;
+    right: 1.5rem;
+    top: 1.5rem;
+    font-size: 2rem;
+    color: var(--secondary-text);
+    cursor: pointer;
+    z-index: 10;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: var(--background);
+    box-shadow: var(--box-shadow);
+    transition: all 0.3s ease;
+}
+
+.close-modal:hover {
+    transform: rotate(90deg);
+    color: var(--accent);
+}
+
+.modal-body {
+    padding: 2.5rem;
+}
+
+.poem-details {
+    display: flex;
+    gap: 2rem;
+    margin-bottom: 2rem;
+    flex-wrap: wrap;
+}
+
+#modal-image {
+    width: 250px;
+    height: 350px;
+    object-fit: cover;
+    border-radius: 16px;
+    box-shadow: var(--box-shadow);
+    transition: opacity 0.3s ease;
+}
+
+.poem-info {
+    flex: 1;
+    min-width: 250px;
+}
+
+#modal-title {
+    font-size: 2.5rem;
+    margin-bottom: 0.5rem;
+    font-weight: 700;
+}
+
+#modal-date {
+    font-size: 1rem;
+    color: var(--secondary-text);
+    margin-bottom: 1.5rem;
+}
+
+#modal-text {
+    font-family: 'Inter', sans-serif;
+    white-space: pre-wrap;
+    line-height: 1.8;
+    font-size: 1.1rem;
+    background: var(--card-bg);
+    padding: 2rem;
+    border-radius: 16px;
+    box-shadow: var(--box-shadow-inset);
+}
+
+/* Loading Animation */
+#loading {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 2rem;
+    font-size: 1.2rem;
+    color: var(--secondary-text);
+}
+
+/* Footer */
+footer {
+    text-align: center;
+    padding: 1.5rem;
+    background-color: var(--background);
+    color: var(--secondary-text);
+    box-shadow: 0 -5px 15px rgba(0, 0, 0, 0.05);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .container {
+        padding: 1rem;
+    }
+
+    header h1 {
+        font-size: 2.2rem;
+    }
+
+    .poem-details {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+
+    #modal-image {
+        width: 200px;
+        height: 280px;
+    }
+
+    #modal-title {
+        font-size: 1.8rem;
+    }
+
+    .modal-content {
+        width: 95%;
+        margin: 5% auto;
+    }
+
+    .modal-body {
+        padding: 1.5rem;
+    }
+
+    #modal-text {
+        padding: 1.5rem;
+        font-size: 1rem;
+    }
+}
+
+/* Fix for image in modal */
+#modal-image {
+    transition: opacity 0.3s ease;
+}
+
+/* Error message styling */
+.error {
+    padding: 1.5rem;
+    border-radius: 16px;
+    background-color: #fff5f5;
+    color: #e53e3e;
+    border-left: 5px solid #e53e3e;
+    margin: 1rem 0;
+    font-size: 1.1rem;
+    line-height: 1.6;
+}
+
+.error ul {
+    margin-top: 0.5rem;
+    margin-left: 1.5rem;
+}
+
+.no-results {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 3rem;
+    font-size: 1.2rem;
+    color: var(--secondary-text);
+    background: var(--card-bg);
+    border-radius: 16px;
+    box-shadow: var(--box-shadow);
+}

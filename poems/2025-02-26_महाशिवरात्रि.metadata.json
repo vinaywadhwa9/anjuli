@@ -1,0 +1,27 @@
+{
+    "title": "महाशिवरात्रि",
+    "date": "2025-02-26",
+    "language": "Hindi",
+    "number_of_stanzas": 7,
+    "number_of_lines": 28,
+    "first_line": "हे आदिदेव, हे महादेव,",
+    "themes": [
+        "devotion",
+        "spirituality"
+    ],
+    "theme_hindi": [
+        "भक्ति",
+        "आध्यात्मिकता"
+    ],
+    "mood": [
+        "reverent",
+        "exalting"
+    ],
+    "mood_hindi": [
+        "श्रद्धालु",
+        "उत्कर्षपूर्ण"
+    ],
+    "meter": "quatrains with consistent end rhymes",
+    "rhyme_scheme": "AABB",
+    "image_prompt": "Black and white, low fidelity sketch style (5x7 inches) of Lord Shiva in meditation with cosmic symbolism, Indian style"
+}

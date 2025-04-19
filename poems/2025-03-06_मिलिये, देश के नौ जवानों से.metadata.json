@@ -1,0 +1,27 @@
+{
+    "title": "मिलिये, देश के नौ जवानों से",
+    "date": "2025-03-06",
+    "language": "Hindi",
+    "number_of_stanzas": 9,
+    "number_of_lines": 37,
+    "first_line": "कहानी सुन्दर सी चिड़ियों की",
+    "themes": [
+        "patriotism",
+        "self-reliance"
+    ],
+    "theme_hindi": [
+        "देशभक्ति",
+        "आत्मनिर्भरता"
+    ],
+    "mood": [
+        "cautionary",
+        "critical"
+    ],
+    "mood_hindi": [
+        "सावधान करने वाला",
+        "आलोचनात्मक"
+    ],
+    "meter": "quatrains with varying rhyme patterns",
+    "rhyme_scheme": "AABB with variations",
+    "image_prompt": "Black and white, low fidelity sketch style (5x7 inches) of a bird losing its feathers and youth watching, Indian style"
+}

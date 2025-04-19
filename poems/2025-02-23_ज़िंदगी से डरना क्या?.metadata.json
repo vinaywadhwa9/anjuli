@@ -1,0 +1,27 @@
+{
+    "title": "ज़िंदगी से डरना क्या?",
+    "date": "2025-02-23",
+    "language": "Hindi",
+    "number_of_stanzas": 10,
+    "number_of_lines": 40,
+    "first_line": "डरते थे शिक्षक से हम,",
+    "themes": [
+        "life journey",
+        "aging"
+    ],
+    "theme_hindi": [
+        "जीवन यात्रा",
+        "उम्र बढ़ना"
+    ],
+    "mood": [
+        "reflective",
+        "accepting"
+    ],
+    "mood_hindi": [
+        "चिंतनशील",
+        "स्वीकारोन्मुख"
+    ],
+    "meter": "quatrains with consistent end rhymes",
+    "rhyme_scheme": "AABB",
+    "image_prompt": "Black and white, low fidelity sketch style (5x7 inches) of a person at different stages of life from youth to old age, Indian style"
+}

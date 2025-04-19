@@ -1,0 +1,27 @@
+{
+    "title": "जिंदगी जुझारू की होता है",
+    "date": "2024-11-07",
+    "language": "Hindi",
+    "number_of_stanzas": 5,
+    "number_of_lines": 22,
+    "first_line": "मुफ्त में खाने पीने की मत सोचो,",
+    "themes": [
+        "hard work",
+        "perseverance"
+    ],
+    "theme_hindi": [
+        "मेहनत",
+        "दृढ़ता"
+    ],
+    "mood": [
+        "motivational",
+        "instructive"
+    ],
+    "mood_hindi": [
+        "प्रेरणादायक",
+        "शिक्षाप्रद"
+    ],
+    "meter": "couplets with consistent end rhymes",
+    "rhyme_scheme": "AA BB",
+    "image_prompt": "Black and white, low fidelity sketch style (5x7 inches) of a hard-working person carrying a heavy load uphill, Indian style"
+}

@@ -1,0 +1,27 @@
+{
+    "title": "भगवान राजीव लोचन",
+    "date": "2025-02-18",
+    "language": "Hindi",
+    "number_of_stanzas": 6,
+    "number_of_lines": 24,
+    "first_line": "माटी की महक खुशबू से,",
+    "themes": [
+        "devotion",
+        "sacred geography"
+    ],
+    "theme_hindi": [
+        "भक्ति",
+        "पवित्र भूगोल"
+    ],
+    "mood": [
+        "reverent",
+        "serene"
+    ],
+    "mood_hindi": [
+        "श्रद्धालु",
+        "शांत"
+    ],
+    "meter": "quatrains with consistent end rhymes",
+    "rhyme_scheme": "AABB",
+    "image_prompt": "Black and white, low fidelity sketch style (5x7 inches) of the confluence of rivers with a temple nearby, Indian style"
+}

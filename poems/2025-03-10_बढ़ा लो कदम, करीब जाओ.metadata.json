@@ -1,0 +1,27 @@
+{
+    "title": "बढ़ा लो कदम, करीब जाओ",
+    "date": "2025-03-10",
+    "language": "Hindi",
+    "number_of_stanzas": 7,
+    "number_of_lines": 28,
+    "first_line": "हर बात नाप तोल के नही होती",
+    "themes": [
+        "relationships",
+        "reconciliation"
+    ],
+    "theme_hindi": [
+        "रिश्ते",
+        "मेल-मिलाप"
+    ],
+    "mood": [
+        "reflective",
+        "encouraging"
+    ],
+    "mood_hindi": [
+        "चिंतनशील",
+        "प्रोत्साहित करने वाला"
+    ],
+    "meter": "quatrains with varying rhyme patterns",
+    "rhyme_scheme": "AABB with variations",
+    "image_prompt": "Black and white, low fidelity sketch style (5x7 inches) of two people walking towards each other with outstretched hands, Indian style"
+}

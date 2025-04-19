@@ -1,0 +1,27 @@
+{
+    "title": "राज के रण बांकुरे",
+    "date": "2025-02-21",
+    "language": "Hindi",
+    "number_of_stanzas": 9,
+    "number_of_lines": 36,
+    "first_line": "हर पीढ़ी बढ़ती है आगे,",
+    "themes": [
+        "heroism",
+        "historical valor"
+    ],
+    "theme_hindi": [
+        "वीरता",
+        "ऐतिहासिक शौर्य"
+    ],
+    "mood": [
+        "proud",
+        "inspirational"
+    ],
+    "mood_hindi": [
+        "गौरवान्वित",
+        "प्रेरणादायक"
+    ],
+    "meter": "quatrains with consistent end rhymes",
+    "rhyme_scheme": "AABB",
+    "image_prompt": "Black and white, low fidelity sketch style (5x7 inches) of Maratha warriors in battle with swords raised, Indian style"
+}

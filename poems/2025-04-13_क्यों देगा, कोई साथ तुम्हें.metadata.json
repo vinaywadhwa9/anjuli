@@ -1,0 +1,27 @@
+{
+    "title": "क्यों देगा, कोई साथ तुम्हें",
+    "date": "2025-04-13",
+    "language": "Hindi",
+    "number_of_stanzas": 7,
+    "number_of_lines": 29,
+    "first_line": "किस्मत जो सबकी बनाते हैं,",
+    "themes": [
+        "self-reliance",
+        "relationships"
+    ],
+    "theme_hindi": [
+        "आत्मनिर्भरता",
+        "रिश्ते"
+    ],
+    "mood": [
+        "reflective",
+        "cautionary"
+    ],
+    "mood_hindi": [
+        "चिंतनशील",
+        "सावधान करने वाला"
+    ],
+    "meter": "quatrains with consistent end rhymes",
+    "rhyme_scheme": "AABB",
+    "image_prompt": "Black and white, low fidelity sketch style (5x7 inches) of a solitary figure standing tall by themselves, Indian style"
+}

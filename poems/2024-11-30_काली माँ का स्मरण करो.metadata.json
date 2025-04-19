@@ -1,0 +1,27 @@
+{
+    "title": "काली माँ का स्मरण करो",
+    "date": "2024-11-30",
+    "language": "Hindi",
+    "number_of_stanzas": 8,
+    "number_of_lines": 32,
+    "first_line": "जब मृत्यु दिखती हो सन्मुख",
+    "themes": [
+        "divine protection",
+        "courage"
+    ],
+    "theme_hindi": [
+        "दैवीय सुरक्षा",
+        "साहस"
+    ],
+    "mood": [
+        "cautionary",
+        "invoking"
+    ],
+    "mood_hindi": [
+        "सावधान करनेवाला",
+        "आह्वान करनेवाला"
+    ],
+    "meter": "quatrains with varying rhyme patterns",
+    "rhyme_scheme": "AABB with variations",
+    "image_prompt": "Black and white, low fidelity sketch style (5x7 inches) of Goddess Kali, Indian style"
+}

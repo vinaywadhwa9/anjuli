@@ -1,0 +1,27 @@
+{
+    "title": "खुशी और गम में भी साथ है",
+    "date": "2025-04-16",
+    "language": "Hindi",
+    "number_of_stanzas": 8,
+    "number_of_lines": 32,
+    "first_line": "कोसों दूर चले जाने पर,",
+    "themes": [
+        "village life",
+        "nostalgia"
+    ],
+    "theme_hindi": [
+        "ग्रामीण जीवन",
+        "नॉस्टैल्जिया"
+    ],
+    "mood": [
+        "peaceful",
+        "nostalgic"
+    ],
+    "mood_hindi": [
+        "शांतिपूर्ण",
+        "नॉस्टैल्जिक"
+    ],
+    "meter": "quatrains with consistent end rhymes",
+    "rhyme_scheme": "AABB",
+    "image_prompt": "Black and white, low fidelity sketch style (5x7 inches) of a village with a large peepal tree and small temple, Indian style"
+}

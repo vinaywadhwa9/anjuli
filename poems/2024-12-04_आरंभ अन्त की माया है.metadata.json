@@ -1,0 +1,27 @@
+{
+    "title": "आरंभ अन्त की माया है",
+    "date": "2024-12-04",
+    "language": "Hindi",
+    "number_of_stanzas": 7,
+    "number_of_lines": 28,
+    "first_line": "जो कर्म को समझता है,",
+    "themes": [
+        "philosophy",
+        "unity"
+    ],
+    "theme_hindi": [
+        "दर्शन",
+        "एकता"
+    ],
+    "mood": [
+        "contemplative",
+        "instructive"
+    ],
+    "mood_hindi": [
+        "चिंतनशील",
+        "शिक्षाप्रद"
+    ],
+    "meter": "quatrains with consistent end rhymes",
+    "rhyme_scheme": "AABB",
+    "image_prompt": "Black and white, low fidelity sketch style (5x7 inches) of a person contemplating the universe and life cycle, Indian style"
+}

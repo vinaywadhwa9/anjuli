@@ -1,0 +1,28 @@
+# Personal images
+img/avatar.jpg
+
+# Development logs
+*.log
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Editor directories and files
+.idea/
+.vscode/
+*.sublime-project
+*.sublime-workspace
+
+# Legacy folders - remove after migration
+[0-9]/
+[0-9][0-9]/
+
+# Backup files
+*.bak
+*~ 

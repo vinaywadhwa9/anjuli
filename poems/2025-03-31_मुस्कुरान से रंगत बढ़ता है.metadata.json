@@ -1,0 +1,27 @@
+{
+    "title": "मुस्कुरान से रंगत बढ़ता है",
+    "date": "2025-03-31",
+    "language": "Hindi",
+    "number_of_stanzas": 5,
+    "number_of_lines": 20,
+    "first_line": "धन्यवाद करते रहे हम,",
+    "themes": [
+        "gratitude",
+        "nature's beauty"
+    ],
+    "theme_hindi": [
+        "आभार",
+        "प्रकृति का सौंदर्य"
+    ],
+    "mood": [
+        "appreciative",
+        "peaceful"
+    ],
+    "mood_hindi": [
+        "प्रशंसात्मक",
+        "शांतिपूर्ण"
+    ],
+    "meter": "quatrains with consistent end rhymes",
+    "rhyme_scheme": "AABB",
+    "image_prompt": "Black and white, low fidelity sketch style (5x7 inches) of a person thanking nature with folded hands, Indian style"
+}

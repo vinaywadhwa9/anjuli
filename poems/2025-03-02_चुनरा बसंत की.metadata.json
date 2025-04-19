@@ -1,0 +1,27 @@
+{
+    "title": "चुनरा बसंत की",
+    "date": "2025-03-02",
+    "language": "Hindi",
+    "number_of_stanzas": 5,
+    "number_of_lines": 20,
+    "first_line": "धरती ने ओढ़ी, वासंती चुनरी,",
+    "themes": [
+        "spring season",
+        "nature's beauty"
+    ],
+    "theme_hindi": [
+        "वसंत ऋतु",
+        "प्रकृति का सौंदर्य"
+    ],
+    "mood": [
+        "joyful",
+        "celebratory"
+    ],
+    "mood_hindi": [
+        "आनंदित",
+        "उत्सवपूर्ण"
+    ],
+    "meter": "quatrains with consistent end rhymes",
+    "rhyme_scheme": "ABAB CDCD",
+    "image_prompt": "Black and white, low fidelity sketch style (5x7 inches) of Earth draped in a saree, Indian style"
+}

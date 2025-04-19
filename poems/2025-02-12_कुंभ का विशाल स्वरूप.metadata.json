@@ -1,0 +1,27 @@
+{
+    "title": "कुंभ का विशाल स्वरूप",
+    "date": "2025-02-12",
+    "language": "Hindi",
+    "number_of_stanzas": 7,
+    "number_of_lines": 28,
+    "first_line": "क्या होगा इस भीड़ का,",
+    "themes": [
+        "faith",
+        "kumbh mela"
+    ],
+    "theme_hindi": [
+        "आस्था",
+        "कुंभ मेला"
+    ],
+    "mood": [
+        "reverent",
+        "contemplative"
+    ],
+    "mood_hindi": [
+        "श्रद्धालु",
+        "चिंतनशील"
+    ],
+    "meter": "quatrains with consistent end rhymes",
+    "rhyme_scheme": "AABB",
+    "image_prompt": "Black and white, low fidelity sketch style (5x7 inches) of crowds gathering at Kumbh Mela by the Ganges, Indian style"
+}

@@ -1,0 +1,27 @@
+{
+    "title": "देखा दूर अतीरिश से",
+    "date": "2025-04-08",
+    "language": "Hindi",
+    "number_of_stanzas": 10,
+    "number_of_lines": 40,
+    "first_line": "हां जी, उसने देख लिया है,",
+    "themes": [
+        "space exploration",
+        "unity"
+    ],
+    "theme_hindi": [
+        "अंतरिक्ष अन्वेषण",
+        "एकता"
+    ],
+    "mood": [
+        "reflective",
+        "philosophical"
+    ],
+    "mood_hindi": [
+        "चिंतनशील",
+        "दार्शनिक"
+    ],
+    "meter": "quatrains with consistent end rhymes",
+    "rhyme_scheme": "AABB",
+    "image_prompt": "Black and white, low fidelity sketch style (5x7 inches) of Earth viewed from space with an astronaut silhouette, Indian style"
+}

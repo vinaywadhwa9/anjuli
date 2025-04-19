@@ -1,0 +1,27 @@
+{
+    "title": "आज तुम्हारा जन्मदिन है",
+    "date": "2025-02-15",
+    "language": "Hindi",
+    "number_of_stanzas": 8,
+    "number_of_lines": 32,
+    "first_line": "कभी नन्ही सी थी गुड़िया मेरी",
+    "themes": [
+        "childhood",
+        "nostalgia"
+    ],
+    "theme_hindi": [
+        "बचपन",
+        "नॉस्टैल्जिया"
+    ],
+    "mood": [
+        "celebratory",
+        "sentimental"
+    ],
+    "mood_hindi": [
+        "उत्सवी",
+        "भावुक"
+    ],
+    "meter": "quatrains with consistent end rhymes",
+    "rhyme_scheme": "AABB",
+    "image_prompt": "Black and white, low fidelity sketch style (5x7 inches) of a parent looking at their child's birthday celebration, Indian style"
+}

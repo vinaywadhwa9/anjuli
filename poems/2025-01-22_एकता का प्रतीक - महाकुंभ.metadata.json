@@ -1,0 +1,27 @@
+{
+    "title": "एकता का प्रतीक - महाकुंभ",
+    "date": "2025-01-22",
+    "language": "Hindi",
+    "number_of_stanzas": 9,
+    "number_of_lines": 36,
+    "first_line": "संगम त्रिवेणी, माँ का आँचल,",
+    "themes": [
+        "unity",
+        "spirituality"
+    ],
+    "theme_hindi": [
+        "एकता",
+        "आध्यात्मिकता"
+    ],
+    "mood": [
+        "reverent",
+        "celebratory"
+    ],
+    "mood_hindi": [
+        "श्रद्धालु",
+        "उत्सवी"
+    ],
+    "meter": "quatrains with consistent end rhymes",
+    "rhyme_scheme": "AABB",
+    "image_prompt": "Black and white, low fidelity sketch style (5x7 inches) of Kumbh Mela at the confluence of rivers with diverse pilgrims, Indian style"
+}

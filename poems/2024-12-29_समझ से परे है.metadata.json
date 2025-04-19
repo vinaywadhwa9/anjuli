@@ -1,0 +1,27 @@
+{
+    "title": "समझ से परे है",
+    "date": "2024-12-29",
+    "language": "Hindi",
+    "number_of_stanzas": 7,
+    "number_of_lines": 24,
+    "first_line": "तारीखें बदलती हैं कलेंडर में,",
+    "themes": [
+        "societal change",
+        "moral decline"
+    ],
+    "theme_hindi": [
+        "सामाजिक परिवर्तन",
+        "नैतिक पतन"
+    ],
+    "mood": [
+        "contemplative",
+        "critical"
+    ],
+    "mood_hindi": [
+        "चिंतनशील",
+        "आलोचनात्मक"
+    ],
+    "meter": "free verse with quatrains",
+    "rhyme_scheme": "AABB with variations",
+    "image_prompt": "Black and white, low fidelity sketch style (5x7 inches) of a calendar page turning, Indian style"
+}

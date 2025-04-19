@@ -1,0 +1,27 @@
+{
+    "title": "एक नयी सुबह मेरी",
+    "date": "2025-03-26",
+    "language": "Hindi",
+    "number_of_stanzas": 8,
+    "number_of_lines": 32,
+    "first_line": "फिर सुबह हुई, पक्षी जागे,",
+    "themes": [
+        "morning",
+        "rejuvenation"
+    ],
+    "theme_hindi": [
+        "सुबह",
+        "नवजीवन"
+    ],
+    "mood": [
+        "optimistic",
+        "grateful"
+    ],
+    "mood_hindi": [
+        "आशावादी",
+        "कृतज्ञ"
+    ],
+    "meter": "quatrains with consistent end rhymes",
+    "rhyme_scheme": "AABB",
+    "image_prompt": "Black and white, low fidelity sketch style (5x7 inches) of a sunrise with birds singing and flowers blooming, Indian style"
+}

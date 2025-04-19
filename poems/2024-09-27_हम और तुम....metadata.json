@@ -1,0 +1,27 @@
+{
+    "title": "हम और तुम...",
+    "date": "2024-09-27",
+    "language": "Hindi",
+    "number_of_stanzas": 7,
+    "number_of_lines": 28,
+    "first_line": "हम और तुम, ऐसे साथी हैं,",
+    "themes": [
+        "friendship",
+        "unity"
+    ],
+    "theme_hindi": [
+        "मित्रता",
+        "एकता"
+    ],
+    "mood": [
+        "warm",
+        "supportive"
+    ],
+    "mood_hindi": [
+        "स्नेहपूर्ण",
+        "सहायक"
+    ],
+    "meter": "quatrains with consistent syllable count",
+    "rhyme_scheme": "AABB",
+    "image_prompt": "Black and white, low fidelity sketch style (5x7 inches) of two friends walking together on a path, Indian style"
+}

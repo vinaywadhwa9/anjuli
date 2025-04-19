@@ -1,0 +1,27 @@
+{
+    "title": "हाथ थाम्भो ता दुनिया सारा है",
+    "date": "2024-11-29",
+    "language": "Hindi",
+    "number_of_stanzas": 5,
+    "number_of_lines": 20,
+    "first_line": "दुनियां वालों ने कहा जब,",
+    "themes": [
+        "aging",
+        "companionship"
+    ],
+    "theme_hindi": [
+        "बुढ़ापा",
+        "साथी"
+    ],
+    "mood": [
+        "reflective",
+        "nostalgic"
+    ],
+    "mood_hindi": [
+        "चिंतनशील",
+        "यादगार"
+    ],
+    "meter": "free verse with quatrains",
+    "rhyme_scheme": "AABB",
+    "image_prompt": "Black and white, low fidelity sketch style (5x7 inches) of an elderly couple holding hands, Indian style"
+}

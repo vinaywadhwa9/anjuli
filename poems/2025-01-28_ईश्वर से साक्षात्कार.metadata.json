@@ -1,0 +1,27 @@
+{
+    "title": "ईश्वर से साक्षात्कार",
+    "date": "2025-01-28",
+    "language": "Hindi",
+    "number_of_stanzas": 9,
+    "number_of_lines": 36,
+    "first_line": "चाहता हूँ मैं देख सकूँ,",
+    "themes": [
+        "spirituality",
+        "existential questions"
+    ],
+    "theme_hindi": [
+        "आध्यात्मिकता",
+        "अस्तित्वपरक प्रश्न"
+    ],
+    "mood": [
+        "philosophical",
+        "questioning"
+    ],
+    "mood_hindi": [
+        "दार्शनिक",
+        "जिज्ञासु"
+    ],
+    "meter": "regular quatrains with AABB rhyme scheme",
+    "rhyme_scheme": "AABB",
+    "image_prompt": "Black and white, low fidelity sketch style (5x7 inches) of a person looking at the sun, Indian style"
+}

@@ -1,0 +1,27 @@
+{
+    "title": "कब तक यूं अंजान बनोगे...",
+    "date": "2025-01-09",
+    "language": "Hindi",
+    "number_of_stanzas": 8,
+    "number_of_lines": 32,
+    "first_line": "बदल गयी रफ्तार समय की,",
+    "themes": [
+        "change",
+        "environmental awareness"
+    ],
+    "theme_hindi": [
+        "परिवर्तन",
+        "पर्यावरण जागरूकता"
+    ],
+    "mood": [
+        "motivational",
+        "cautionary"
+    ],
+    "mood_hindi": [
+        "प्रेरणादायक",
+        "सावधान करने वाला"
+    ],
+    "meter": "quatrains with consistent end rhymes",
+    "rhyme_scheme": "AABB",
+    "image_prompt": "Black and white, low fidelity sketch style (5x7 inches) of a person looking at changing landscape with industries and trees, Indian style"
+}

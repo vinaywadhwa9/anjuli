@@ -1,0 +1,27 @@
+{
+    "title": "होते हैं कुछ लोग ऐसे भी",
+    "date": "2024-12-22",
+    "language": "Hindi",
+    "number_of_stanzas": 7,
+    "number_of_lines": 28,
+    "first_line": "होते हैं कुछ लोग ऐसे भी,",
+    "themes": [
+        "kindness",
+        "empathy"
+    ],
+    "theme_hindi": [
+        "दयालुता",
+        "संवेदना"
+    ],
+    "mood": [
+        "appreciative",
+        "uplifting"
+    ],
+    "mood_hindi": [
+        "सराहनापूर्ण",
+        "उत्थानशील"
+    ],
+    "meter": "quatrains with consistent end rhymes",
+    "rhyme_scheme": "AABB",
+    "image_prompt": "Black and white, low fidelity sketch style (5x7 inches) of a person helping someone in need with a gentle smile, Indian style"
+}

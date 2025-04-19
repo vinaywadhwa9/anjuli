@@ -1,0 +1,27 @@
+{
+    "title": "चौराहे पर ही अटका हूँ",
+    "date": "2024-12-05",
+    "language": "Hindi",
+    "number_of_stanzas": 8,
+    "number_of_lines": 32,
+    "first_line": "भटक गया था घर का रास्ता,",
+    "themes": [
+        "confusion",
+        "social observation"
+    ],
+    "theme_hindi": [
+        "भ्रम",
+        "सामाजिक टिप्पणी"
+    ],
+    "mood": [
+        "bewildered",
+        "reflective"
+    ],
+    "mood_hindi": [
+        "भ्रमित",
+        "चिंतनशील"
+    ],
+    "meter": "quatrains with consistent end rhymes",
+    "rhyme_scheme": "AABB",
+    "image_prompt": "Black and white, low fidelity sketch style (5x7 inches) of a person standing confused at a busy crossroads, Indian style"
+}
