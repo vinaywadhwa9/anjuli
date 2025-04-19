@@ -84,8 +84,8 @@ async function initApp() {
             return;
         }
 
-        // Sort poems chronologically by date
-        allPoems.sort((a, b) => new Date(a.date) - new Date(b.date));
+        // Sort poems in reverse chronological order (newest first)
+        allPoems.sort((a, b) => new Date(b.date) - new Date(a.date));
 
         // Extract unique Hindi themes for the filter
         console.log(`[Poetry App ${scriptVersion}] Extracting themes from ${allPoems.length} poems...`);
