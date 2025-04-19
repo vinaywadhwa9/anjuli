@@ -104,11 +104,21 @@ async function loadPoemsFromManifest() {
     logDebug(`Loading poems from manifest`);
 
     try {
-        // Try to load the manifest file
-        const manifestResponse = await fetch('poems/poems-manifest.json');
+        // Try to load the manifest file - using the correct path
+        let manifestUrl = 'poems/poems-manifest.json';
+        logDebug(`Attempting to load manifest from: ${manifestUrl}`);
 
+        let manifestResponse = await fetch(manifestUrl);
+
+        // If that fails, try an alternate location
         if (!manifestResponse.ok) {
-            throw new Error(`Failed to load poems manifest. Status: ${manifestResponse.status}`);
+            logDebug(`Failed to load manifest from ${manifestUrl}, trying alternate location`);
+            manifestUrl = './poems/poems-manifest.json';
+            manifestResponse = await fetch(manifestUrl);
+
+            if (!manifestResponse.ok) {
+                throw new Error(`Failed to load poems manifest. Status: ${manifestResponse.status}`);
+            }
         }
 
         const manifest = await manifestResponse.json();
@@ -144,8 +154,12 @@ async function loadPoemFile(fileName) {
     logDebug(`Loading poem file: ${fileName}`);
 
     try {
+        // Try to construct proper URLs for the poem files
+        const baseUrl = './poems/';
+
         // Load metadata
-        const metadataUrl = `poems/${fileName}.metadata.json`;
+        const metadataUrl = `${baseUrl}${fileName}.metadata.json`;
+        logDebug(`Attempting to load metadata from: ${metadataUrl}`);
         const metadataResponse = await fetch(metadataUrl);
 
         if (!metadataResponse.ok) {
@@ -155,7 +169,8 @@ async function loadPoemFile(fileName) {
         const metadata = await metadataResponse.json();
 
         // Load text
-        const textUrl = `poems/${fileName}.txt`;
+        const textUrl = `${baseUrl}${fileName}.txt`;
+        logDebug(`Attempting to load text from: ${textUrl}`);
         const textResponse = await fetch(textUrl);
 
         if (!textResponse.ok) {
@@ -165,7 +180,7 @@ async function loadPoemFile(fileName) {
         const text = await textResponse.text();
 
         // Use the image if it exists
-        const imagePath = `poems/${fileName}.png`;
+        const imagePath = `${baseUrl}${fileName}.png`;
 
         return {
             id: `poem-${fileName}`,
