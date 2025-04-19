@@ -1,6 +1,7 @@
 // Global variables
 let allPoems = [];
 let uniqueThemesHindi = new Set();
+let baseUrl = '';
 
 // DOM elements - add null checks
 const poemsContainer = document.getElementById('poems-container');
@@ -30,6 +31,10 @@ document.addEventListener('DOMContentLoaded', initApp);
 async function initApp() {
     try {
         logDebug('Starting application initialization');
+
+        // Determine base URL for GitHub Pages
+        detectBaseUrl();
+        logDebug(`Using base URL: ${baseUrl}`);
 
         // Check if required DOM elements exist
         if (!poemsContainer) {
@@ -99,25 +104,55 @@ async function initApp() {
     }
 }
 
+// Function to detect base URL for GitHub Pages
+function detectBaseUrl() {
+    const currentUrl = window.location.href;
+    logDebug(`Current URL: ${currentUrl}`);
+
+    // For GitHub Pages project sites the URL structure is: username.github.io/repository/
+    // We need to extract the repository part
+    const pathParts = window.location.pathname.split('/');
+
+    if (currentUrl.includes('github.io') && pathParts.length > 1) {
+        // This is likely a GitHub Pages site
+        baseUrl = '/' + pathParts[1] + '/';
+        logDebug(`Detected GitHub Pages project site: ${baseUrl}`);
+    } else if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+        // Local development
+        baseUrl = '/';
+        logDebug('Detected localhost development');
+    } else {
+        // Default case
+        baseUrl = '/';
+        logDebug('Using default base URL');
+    }
+}
+
 // Simplified function to load poems using the manifest
 async function loadPoemsFromManifest() {
     logDebug(`Loading poems from manifest`);
 
     try {
-        // Try to load the manifest file - using the correct path
-        let manifestUrl = 'poems/poems-manifest.json';
-        logDebug(`Attempting to load manifest from: ${manifestUrl}`);
+        // Try to load the manifest file - using the correct path with baseUrl
+        let manifestPath = baseUrl + 'poems/poems-manifest.json';
+        logDebug(`Attempting to load manifest from: ${manifestPath}`);
 
-        let manifestResponse = await fetch(manifestUrl);
+        let manifestResponse = await fetch(manifestPath);
 
         // If that fails, try an alternate location
         if (!manifestResponse.ok) {
-            logDebug(`Failed to load manifest from ${manifestUrl}, trying alternate location`);
-            manifestUrl = './poems/poems-manifest.json';
-            manifestResponse = await fetch(manifestUrl);
+            logDebug(`Failed to load manifest from ${manifestPath}, trying alternate location`);
+            manifestPath = 'poems/poems-manifest.json';
+            manifestResponse = await fetch(manifestPath);
 
             if (!manifestResponse.ok) {
-                throw new Error(`Failed to load poems manifest. Status: ${manifestResponse.status}`);
+                manifestPath = './poems/poems-manifest.json';
+                logDebug(`Failed again, trying: ${manifestPath}`);
+                manifestResponse = await fetch(manifestPath);
+
+                if (!manifestResponse.ok) {
+                    throw new Error(`Failed to load poems manifest. Status: ${manifestResponse.status}`);
+                }
             }
         }
 
@@ -154,11 +189,11 @@ async function loadPoemFile(fileName) {
     logDebug(`Loading poem file: ${fileName}`);
 
     try {
-        // Try to construct proper URLs for the poem files
-        const baseUrl = './poems/';
+        // Try to construct proper URLs for the poem files with the base URL
+        const poemsDir = baseUrl + 'poems/';
 
         // Load metadata
-        const metadataUrl = `${baseUrl}${fileName}.metadata.json`;
+        const metadataUrl = `${poemsDir}${fileName}.metadata.json`;
         logDebug(`Attempting to load metadata from: ${metadataUrl}`);
         const metadataResponse = await fetch(metadataUrl);
 
@@ -169,7 +204,7 @@ async function loadPoemFile(fileName) {
         const metadata = await metadataResponse.json();
 
         // Load text
-        const textUrl = `${baseUrl}${fileName}.txt`;
+        const textUrl = `${poemsDir}${fileName}.txt`;
         logDebug(`Attempting to load text from: ${textUrl}`);
         const textResponse = await fetch(textUrl);
 
@@ -180,7 +215,7 @@ async function loadPoemFile(fileName) {
         const text = await textResponse.text();
 
         // Use the image if it exists
-        const imagePath = `${baseUrl}${fileName}.png`;
+        const imagePath = `${poemsDir}${fileName}.png`;
 
         return {
             id: `poem-${fileName}`,
@@ -255,7 +290,8 @@ function createPoemCard(poem) {
 
     // Handle image loading errors
     image.onerror = function () {
-        this.src = 'img/placeholder.jpg';
+        // Use base URL for placeholder image
+        this.src = baseUrl + 'img/placeholder.jpg';
     };
 
     imageContainer.appendChild(image);
@@ -338,7 +374,7 @@ function openPoemModal(poem) {
 
         // Handle image loading errors
         modalImage.onerror = function () {
-            this.src = 'img/placeholder.jpg';
+            this.src = baseUrl + 'img/placeholder.jpg';
         };
     }
 
