@@ -88,17 +88,29 @@ async function initApp() {
         allPoems.sort((a, b) => new Date(a.date) - new Date(b.date));
 
         // Extract unique Hindi themes for the filter
-        allPoems.forEach(poem => {
-            if (poem.themesHindi) {
-                poem.themesHindi.forEach(theme => uniqueThemesHindi.add(theme));
+        console.log(`[Poetry App ${scriptVersion}] Extracting themes from ${allPoems.length} poems...`);
+        console.log(`[Poetry App ${scriptVersion}] First poem object:`, allPoems.length > 0 ? allPoems[0] : 'No poems loaded');
+        allPoems.forEach((poem, index) => {
+            if (poem && poem.themesHindi && Array.isArray(poem.themesHindi)) {
+                poem.themesHindi.forEach(theme => {
+                    if (theme && typeof theme === 'string') {
+                        uniqueThemesHindi.add(theme.trim());
+                    }
+                });
+            } else {
+                console.warn(`[Poetry App ${scriptVersion}] Poem at index ${index} has missing or invalid themesHindi:`, poem);
             }
         });
 
+        console.log(`[Poetry App ${scriptVersion}] Found ${uniqueThemesHindi.size} unique Hindi themes:`, Array.from(uniqueThemesHindi));
         logDebug(`Found ${uniqueThemesHindi.size} unique Hindi themes`);
 
         // Populate theme filter with Hindi themes
         if (themeFilter) {
+            console.log(`[Poetry App ${scriptVersion}] Populating theme filter...`);
             populateThemeFilter();
+        } else {
+            console.warn(`[Poetry App ${scriptVersion}] Theme filter element not found!`);
         }
 
         // Display the poems
