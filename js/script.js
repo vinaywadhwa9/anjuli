@@ -39,16 +39,14 @@ async function initApp() {
 
         poemsContainer.innerHTML = '<div id="loading">Loading poems... Please wait</div>';
 
-        // Load all poems from folders 1-6
-        for (let folder = 1; folder <= 6; folder++) {
-            try {
-                logDebug(`Attempting to load poems from folder ${folder}`);
-                const poemsList = await loadPoemsFromFolder(folder);
-                logDebug(`Successfully loaded ${poemsList.length} poems from folder ${folder}`);
-                allPoems = [...allPoems, ...poemsList];
-            } catch (error) {
-                logDebug(`Error loading poems from folder ${folder}:`, error);
-            }
+        // Load all poems from the poems directory (instead of numbered folders)
+        try {
+            logDebug(`Attempting to load poems from the poems directory`);
+            const poemsList = await loadPoemsFromDirectory('poems');
+            logDebug(`Successfully loaded ${poemsList.length} poems`);
+            allPoems = [...allPoems, ...poemsList];
+        } catch (error) {
+            logDebug(`Error loading poems:`, error);
         }
 
         logDebug(`Total poems loaded: ${allPoems.length}`);
@@ -99,20 +97,21 @@ async function initApp() {
     }
 }
 
-async function loadPoemsFromFolder(folderNumber) {
-    logDebug(`Loading poems from folder ${folderNumber}...`);
+// New function to load poems from a directory
+async function loadPoemsFromDirectory(directory) {
+    logDebug(`Loading poems from directory ${directory}...`);
 
     try {
-        // Try to load from manifest file first (for GitHub Pages)
-        logDebug(`Trying to load manifest for folder ${folderNumber}`);
-        const manifestResponse = await fetch(`${folderNumber}/poems-manifest.json`);
+        // Try to load manifest file first (for GitHub Pages)
+        logDebug(`Trying to load manifest for directory ${directory}`);
+        const manifestResponse = await fetch(`${directory}/poems-manifest.json`);
 
         if (manifestResponse.ok) {
-            logDebug(`Found manifest file for folder ${folderNumber}`);
+            logDebug(`Found manifest file for directory ${directory}`);
             const manifest = await manifestResponse.json();
 
             if (!manifest.poems || !Array.isArray(manifest.poems) || manifest.poems.length === 0) {
-                logDebug(`Manifest for folder ${folderNumber} has no poems or is invalid`);
+                logDebug(`Manifest for directory ${directory} has no poems or is invalid`);
                 return [];
             }
 
@@ -122,106 +121,188 @@ async function loadPoemsFromFolder(folderNumber) {
             const poems = await Promise.all(
                 manifest.poems.map(async (fileName) => {
                     try {
-                        return await loadPoem(folderNumber, fileName);
+                        return await loadPoemFromDirectory(directory, fileName);
                     } catch (error) {
-                        logDebug(`Failed to load poem ${fileName} from folder ${folderNumber}:`, error);
-                        return null;
-                    }
-                })
-            );
-
-            const validPoems = poems.filter(poem => poem !== null);
-            logDebug(`Successfully loaded ${validPoems.length} poems from folder ${folderNumber}`);
-
-            return validPoems;
-        } else {
-            logDebug(`No manifest file found for folder ${folderNumber}, trying directory listing`);
-
-            // Try directory listing
-            const response = await fetch(`${folderNumber}/poems/`);
-
-            if (!response.ok) {
-                logDebug(`Directory listing failed for folder ${folderNumber}`);
-                throw new Error(`Failed to load poems from folder ${folderNumber}`);
-            }
-
-            // This would work if the server supports directory listing
-            const html = await response.text();
-            const parser = new DOMParser();
-            const doc = parser.parseFromString(html, 'text/html');
-            const links = doc.querySelectorAll('a');
-
-            const poemFiles = Array.from(links)
-                .map(link => link.href)
-                .filter(href => href.endsWith('.metadata.json'));
-
-            logDebug(`Found ${poemFiles.length} poem files via directory listing`);
-
-            // For each metadata file, load the poem
-            const poems = await Promise.all(
-                poemFiles.map(async (metadataUrl) => {
-                    const fileName = metadataUrl.split('/').pop().replace('.metadata.json', '');
-                    try {
-                        return await loadPoem(folderNumber, fileName);
-                    } catch (error) {
-                        logDebug(`Failed to load poem ${fileName}:`, error);
+                        logDebug(`Failed to load poem ${fileName} from directory ${directory}:`, error);
                         return null;
                     }
                 })
             );
 
             return poems.filter(poem => poem !== null);
+        } else {
+            logDebug(`No manifest file found, trying direct poem loading`);
+
+            // Try to directly load poem files by checking for metadata files
+            const metadataFiles = [];
+
+            // Get list of all files in the poems directory
+            try {
+                logDebug(`Attempting to get direct listing of metadata files`);
+                const response = await fetch(`${directory}/`);
+
+                if (response.ok) {
+                    // Parse HTML to get file listings if directory listing is supported
+                    const html = await response.text();
+                    const parser = new DOMParser();
+                    const doc = parser.parseFromString(html, 'text/html');
+                    const links = Array.from(doc.querySelectorAll('a'));
+
+                    links.forEach(link => {
+                        const href = link.getAttribute('href');
+                        if (href && href.endsWith('.metadata.json')) {
+                            metadataFiles.push(href);
+                        }
+                    });
+
+                    logDebug(`Found ${metadataFiles.length} metadata files via directory listing`);
+                } else {
+                    logDebug(`Directory listing not supported, falling back to scanning files manually`);
+                }
+            } catch (error) {
+                logDebug(`Error getting directory listing: ${error.message}`);
+            }
+
+            // If we couldn't get metadata files from listing, try some common patterns
+            if (metadataFiles.length === 0) {
+                // Scan for specific date patterns in filenames (based on your repository content)
+                const years = ['2024', '2025'];
+                const months = Array.from({ length: 12 }, (_, i) => String(i + 1).padStart(2, '0'));
+                const days = Array.from({ length: 31 }, (_, i) => String(i + 1).padStart(2, '0'));
+
+                // Try some common date patterns to find poem files
+                for (const year of years) {
+                    for (const month of months) {
+                        for (const day of days) {
+                            try {
+                                const testPath = `${directory}/${year}-${month}-${day}_`;
+                                const response = await fetch(`${testPath}*.metadata.json`);
+                                if (response.ok) {
+                                    // If we find a file with this pattern, add it
+                                    const fileName = `${year}-${month}-${day}_`;
+                                    metadataFiles.push(fileName);
+                                }
+                            } catch (error) {
+                                // Ignore errors from non-existent files
+                            }
+                        }
+                    }
+                }
+            }
+
+            // Load each poem based on metadata files found
+            const poems = [];
+            for (const metadataFile of metadataFiles) {
+                try {
+                    const fileName = metadataFile.split('/').pop().replace('.metadata.json', '');
+                    const poem = await loadPoemFromDirectory(directory, fileName);
+                    if (poem) {
+                        poems.push(poem);
+                    }
+                } catch (error) {
+                    logDebug(`Error loading poem from ${metadataFile}: ${error.message}`);
+                }
+            }
+
+            logDebug(`Successfully loaded ${poems.length} poems directly`);
+            return poems;
         }
     } catch (error) {
-        logDebug(`Error in loadPoemsFromFolder(${folderNumber}):`, error);
+        logDebug(`Error in loadPoemsFromDirectory: ${error.message}`);
 
-        // Fallback: Try to use the poems.txt file directly
-        return await fallbackLoadPoems(folderNumber);
+        // Last resort - try to access all files in the directory
+        return fallbackLoadPoems(directory);
     }
 }
 
-// Fallback method to load poems when directory listing is not supported
-async function fallbackLoadPoems(folderNumber) {
-    logDebug(`Attempting fallback loading for folder ${folderNumber}`);
+// Function to load a poem from directory
+async function loadPoemFromDirectory(directory, fileName) {
+    logDebug(`Loading poem ${fileName} from directory ${directory}`);
+
+    try {
+        // Load metadata
+        const metadataUrl = `${directory}/${fileName}.metadata.json`;
+        const metadataResponse = await fetch(metadataUrl);
+
+        if (!metadataResponse.ok) {
+            throw new Error(`Failed to load metadata for ${fileName}`);
+        }
+
+        const metadata = await metadataResponse.json();
+
+        // Load text
+        const textUrl = `${directory}/${fileName}.txt`;
+        const textResponse = await fetch(textUrl);
+
+        if (!textResponse.ok) {
+            throw new Error(`Failed to load text for ${fileName}`);
+        }
+
+        const text = await textResponse.text();
+
+        // Check if image exists
+        const imagePath = `${directory}/${fileName}.png`;
+        const imageExists = await imageExists(imagePath);
+
+        return {
+            id: `poem-${fileName}`,
+            title: metadata.title || 'Untitled',
+            text: text,
+            date: metadata.date || new Date().toISOString().split('T')[0],
+            language: metadata.language || 'Hindi',
+            imagePath: imageExists ? imagePath : 'img/placeholder.jpg',
+            themes: metadata.themes || [],
+            themesHindi: metadata.themesHindi || [],
+            directory: directory
+        };
+    } catch (error) {
+        logDebug(`Error loading poem ${fileName}: ${error.message}`);
+        return null;
+    }
+}
+
+// Keep the existing fallback method but modify it to work with the new directory structure
+async function fallbackLoadPoems(directory) {
+    logDebug(`Attempting fallback loading for directory ${directory}`);
 
     try {
         // Try to load the poems.txt file
-        logDebug(`Trying to load poems.txt for folder ${folderNumber}`);
-        const poemsFileResponse = await fetch(`${folderNumber}/poems.txt`);
+        logDebug(`Trying to load poems.txt for directory ${directory}`);
+        const poemsFileResponse = await fetch(`${directory}/poems.txt`);
 
         if (!poemsFileResponse.ok) {
-            logDebug(`Failed to load poems.txt from folder ${folderNumber}`);
+            logDebug(`Failed to load poems.txt from directory ${directory}`);
 
             // Last resort - just create a filler poem to show something
-            logDebug(`Creating placeholder poem for folder ${folderNumber}`);
+            logDebug(`Creating placeholder poem for directory ${directory}`);
             return [{
-                id: `poem-${folderNumber}-placeholder`,
-                title: `Poems from Collection ${folderNumber}`,
+                id: `poem-${directory}-placeholder`,
+                title: `Poems Collection`,
                 text: "We couldn't load the actual poems. Please make sure the files are properly formatted and accessible.",
                 date: new Date().toISOString().split('T')[0],
                 language: 'Hindi',
                 imagePath: `img/placeholder.jpg`,
                 themes: ['poetry'],
-                folderNumber: folderNumber
+                directory: directory
             }];
         }
 
         const poemsText = await poemsFileResponse.text();
-        logDebug(`Successfully loaded poems.txt for folder ${folderNumber}, parsing content`);
+        logDebug(`Successfully loaded poems.txt for directory ${directory}, parsing content`);
 
-        const poemEntries = parsePoems(poemsText, folderNumber);
+        const poemEntries = parsePoems(poemsText, directory);
         logDebug(`Parsed ${poemEntries.length} poems from poems.txt`);
 
         return poemEntries;
     } catch (error) {
-        logDebug(`Error in fallbackLoadPoems(${folderNumber}):`, error);
+        logDebug(`Error in fallbackLoadPoems(${directory}): ${error.message}`);
         return [];
     }
 }
 
-// Parse the poems.txt file to extract individual poems
-function parsePoems(poemsText, folderNumber) {
-    logDebug(`Parsing poems text for folder ${folderNumber}`);
+// Update parse poems to use directory instead of folderNumber
+function parsePoems(poemsText, directory) {
+    logDebug(`Parsing poems text for directory ${directory}`);
 
     const poems = [];
     const poemBlocks = poemsText.split(/\n\s*\n/); // Split by empty lines
@@ -240,118 +321,60 @@ function parsePoems(poemsText, folderNumber) {
 
             // Create a basic poem object
             const poem = {
-                id: `poem-${folderNumber}-${poems.length + 1}`,
+                id: `poem-${directory}-${poems.length + 1}`,
                 title: title,
                 text: poemText,
                 date: new Date().toISOString().split('T')[0], // Placeholder
                 language: 'Hindi', // Assuming Hindi as default
                 imagePath: `img/placeholder.jpg`, // Use common placeholder
                 themes: ['poetry'], // Placeholder
-                folderNumber: folderNumber
+                directory: directory
             };
 
             poems.push(poem);
         }
     }
 
-    logDebug(`Successfully parsed ${poems.length} poems from text`);
+    logDebug(`Successfully parsed ${poems.length} poems`);
     return poems;
 }
 
+// Keep the original loadPoem function for backward compatibility
 async function loadPoem(folderNumber, fileName) {
-    logDebug(`Loading poem ${fileName} from folder ${folderNumber}`);
-
-    try {
-        // Load metadata
-        const metadataResponse = await fetch(`${folderNumber}/poems/${fileName}.metadata.json`);
-        if (!metadataResponse.ok) {
-            throw new Error(`Failed to load metadata for ${fileName}`);
-        }
-        const metadata = await metadataResponse.json();
-
-        // Load poem text
-        const textResponse = await fetch(`${folderNumber}/poems/${fileName}.txt`);
-        if (!textResponse.ok) {
-            throw new Error(`Failed to load text for ${fileName}`);
-        }
-        const text = await textResponse.text();
-
-        // Check if image exists (we won't await this)
-        fetch(`${folderNumber}/poems/${fileName}.png`)
-            .then(response => {
-                if (!response.ok) {
-                    logDebug(`Image not found for poem ${fileName}, will use placeholder`);
-                }
-            })
-            .catch(() => {
-                logDebug(`Error checking image for poem ${fileName}`);
-            });
-
-        // Construct the poem object
-        const poem = {
-            id: `poem-${folderNumber}-${fileName}`,
-            title: metadata.title,
-            text: text,
-            date: metadata.date,
-            language: metadata.language,
-            imagePath: `${folderNumber}/poems/${fileName}.png`,
-            themes: metadata.themes || [],
-            themesHindi: metadata.theme_hindi || [],
-            mood: metadata.mood || [],
-            moodHindi: metadata.mood_hindi || [],
-            firstLine: metadata.first_line || '',
-            folderNumber: folderNumber,
-            fileName: fileName
-        };
-
-        logDebug(`Successfully loaded poem ${fileName}`);
-        return poem;
-    } catch (error) {
-        logDebug(`Error loading poem ${fileName} from folder ${folderNumber}:`, error);
-        return null;
-    }
+    return loadPoemFromDirectory(`${folderNumber}`, fileName);
 }
 
 function populateThemeFilter() {
-    // Make sure theme filter exists
-    if (!themeFilter) return;
+    // Sort themes alphabetically
+    const sortedThemes = Array.from(uniqueThemesHindi).sort();
 
-    // Sort Hindi themes alphabetically
-    const sortedThemes = [...uniqueThemesHindi].sort();
+    // Add "All Themes" option
+    themeFilter.innerHTML = '<option value="all">All Themes</option>';
 
-    // Clear existing options except the "All Themes" option (which is now in Hindi)
-    themeFilter.innerHTML = '<option value="all">सभी विषय</option>';
-
-    // Add each Hindi theme as an option
+    // Add theme options
     sortedThemes.forEach(theme => {
         const option = document.createElement('option');
         option.value = theme;
-        option.textContent = theme; // Hindi theme doesn't need capitalization
+        option.textContent = theme;
         themeFilter.appendChild(option);
     });
-
-    logDebug(`Populated theme filter with ${sortedThemes.length} Hindi theme options`);
 }
 
 function displayPoems(poems) {
-    logDebug(`Displaying ${poems.length} poems`);
+    if (poemsContainer) {
+        if (poems.length === 0) {
+            poemsContainer.innerHTML = '<div class="no-poems">No poems found matching your filters</div>';
+            return;
+        }
 
-    if (poems.length === 0) {
-        poemsContainer.innerHTML = '<div class="no-results">No poems found matching your criteria</div>';
-        return;
+        poemsContainer.innerHTML = '';
+        poems.forEach(poem => {
+            const poemCard = createPoemCard(poem);
+            poemsContainer.appendChild(poemCard);
+        });
     }
-
-    // Clear loading message
-    poemsContainer.innerHTML = '';
-
-    // Create and append poem cards
-    poems.forEach(poem => {
-        const card = createPoemCard(poem);
-        poemsContainer.appendChild(card);
-    });
 }
 
-// Helper function to check if an image exists
 async function imageExists(url) {
     try {
         const response = await fetch(url, { method: 'HEAD' });
@@ -361,142 +384,158 @@ async function imageExists(url) {
     }
 }
 
-// Modified createPoemCard function to handle missing images better and use Hindi themes
 function createPoemCard(poem) {
     const card = document.createElement('div');
     card.className = 'poem-card';
-    card.dataset.poemId = poem.id;
+    card.setAttribute('data-id', poem.id);
 
-    // Create a placeholder for the image that will be filled once we know if it exists
-    const imageHtml = `<div class="poem-image-container">
-        <img class="poem-image" src="img/placeholder.jpg" alt="${poem.title}" data-original="${poem.imagePath}">
-    </div>`;
+    // Image container
+    const imageContainer = document.createElement('div');
+    imageContainer.className = 'poem-image-container';
 
-    // Create the HTML for the card, using Hindi themes
-    card.innerHTML = `
-        ${imageHtml}
-        <div class="poem-content">
-            <h3 class="poem-title">${poem.title}</h3>
-            <p class="poem-date">${formatDate(poem.date)}</p>
-            <p class="poem-preview">${poem.firstLine || poem.text.split('\n')[0]}</p>
-            <div class="tags-container">
-                ${poem.themesHindi ? poem.themesHindi.map(theme => `<span class="tag">${theme}</span>`).join('') : ''}
-            </div>
-        </div>
-    `;
+    const image = document.createElement('img');
+    image.className = 'poem-image';
+    image.src = poem.imagePath;
+    image.alt = poem.title;
+    image.loading = 'lazy';
 
-    // Try to load the actual image after the card is created
-    const img = card.querySelector('.poem-image');
-    const originalSrc = img.getAttribute('data-original');
+    imageContainer.appendChild(image);
+    card.appendChild(imageContainer);
 
-    // Check if the image exists
-    imageExists(originalSrc).then(exists => {
-        if (exists) {
-            img.src = originalSrc;
-        }
-    });
+    // Content
+    const content = document.createElement('div');
+    content.className = 'poem-content';
 
-    // Add event listener to open the modal
+    const title = document.createElement('h3');
+    title.className = 'poem-title';
+    title.textContent = poem.title;
+    content.appendChild(title);
+
+    const date = document.createElement('div');
+    date.className = 'poem-date';
+    date.textContent = formatDate(poem.date);
+    content.appendChild(date);
+
+    const preview = document.createElement('div');
+    preview.className = 'poem-preview';
+
+    // Get first 100 characters as preview
+    const previewText = poem.text.substring(0, 100) + (poem.text.length > 100 ? '...' : '');
+    preview.textContent = previewText;
+    content.appendChild(preview);
+
+    // Themes/tags
+    if (poem.themesHindi && poem.themesHindi.length > 0) {
+        const tagsContainer = document.createElement('div');
+        tagsContainer.className = 'tags-container';
+
+        poem.themesHindi.forEach(theme => {
+            const tag = document.createElement('span');
+            tag.className = 'tag';
+            tag.textContent = theme;
+            tagsContainer.appendChild(tag);
+        });
+
+        content.appendChild(tagsContainer);
+    }
+
+    card.appendChild(content);
+
+    // Add click event
     card.addEventListener('click', () => openPoemModal(poem));
 
     return card;
 }
 
 function formatDate(dateString) {
+    if (!dateString) return '';
+
     try {
         const date = new Date(dateString);
-        return date.toLocaleDateString('en-US', {
-            year: 'numeric',
-            month: 'long',
-            day: 'numeric'
+
+        // Format as DD MMM YYYY (e.g., 15 Jan 2024)
+        return date.toLocaleDateString('en-IN', {
+            day: 'numeric',
+            month: 'short',
+            year: 'numeric'
         });
-    } catch (e) {
-        logDebug('Error formatting date:', e);
-        return dateString; // Return the original string if there's an error
+    } catch (error) {
+        logDebug(`Error formatting date: ${dateString}`, error);
+        return dateString;
     }
 }
 
 function openPoemModal(poem) {
-    // Check if modal elements exist
-    if (!modal || !modalTitle || !modalDate || !modalImage || !modalText || !modalTags) {
-        logDebug('Cannot open modal: modal elements not found');
-        return;
-    }
+    if (!modal) return;
 
     logDebug(`Opening modal for poem: ${poem.title}`);
 
     // Set modal content
-    modalTitle.textContent = poem.title;
-    modalDate.textContent = formatDate(poem.date);
+    if (modalTitle) modalTitle.textContent = poem.title;
+    if (modalDate) modalDate.textContent = formatDate(poem.date);
+    if (modalImage) {
+        modalImage.src = poem.imagePath;
+        modalImage.alt = poem.title;
+    }
 
-    // Set image with placeholder first to prevent flickering
-    modalImage.src = 'img/placeholder.jpg';
-    modalImage.alt = poem.title;
+    if (modalText) {
+        // Format poem text with line breaks
+        modalText.innerHTML = poem.text.split('\n').map(line => {
+            // If line is empty, add extra vertical space
+            return line.trim() === '' ? '<br>' : line;
+        }).join('<br>');
+    }
 
-    // Check if the actual image exists before trying to load it
-    imageExists(poem.imagePath).then(exists => {
-        if (exists) {
-            modalImage.src = poem.imagePath;
-        }
-    });
-
-    // Set poem text
-    modalText.textContent = poem.text;
-
-    // Clear and set Hindi tags
-    modalTags.innerHTML = '';
-    if (poem.themesHindi && poem.themesHindi.length > 0) {
+    if (modalTags && poem.themesHindi && poem.themesHindi.length > 0) {
+        modalTags.innerHTML = '';
         poem.themesHindi.forEach(theme => {
             const tag = document.createElement('span');
             tag.className = 'tag';
             tag.textContent = theme;
             modalTags.appendChild(tag);
         });
+    } else if (modalTags) {
+        modalTags.innerHTML = '';
     }
 
-    // Display the modal
+    // Show modal
     modal.style.display = 'block';
-    document.body.style.overflow = 'hidden'; // Prevent scrolling behind modal
+    document.body.style.overflow = 'hidden'; // Prevent scrolling
 }
 
 function closeModalHandler() {
     if (!modal) return;
 
-    logDebug('Closing modal');
     modal.style.display = 'none';
-    document.body.style.overflow = ''; // Restore scrolling
+    document.body.style.overflow = ''; // Re-enable scrolling
 }
 
 function filterPoems() {
-    if (!searchInput || !themeFilter) return;
+    logDebug(`Filtering poems...`);
 
-    const searchTerm = searchInput.value.toLowerCase();
-    const themeValue = themeFilter.value;
+    const searchValue = searchInput ? searchInput.value.toLowerCase() : '';
+    const themeValue = themeFilter ? themeFilter.value : 'all';
 
-    logDebug(`Filtering poems - Search: "${searchTerm}", Theme: ${themeValue}`);
+    logDebug(`Filter values - Search: "${searchValue}", Theme: ${themeValue}`);
 
     const filteredPoems = allPoems.filter(poem => {
-        // Search term filter
-        const searchMatch =
-            poem.title.toLowerCase().includes(searchTerm) ||
-            poem.text.toLowerCase().includes(searchTerm) ||
-            (poem.themesHindi && poem.themesHindi.some(theme => theme.toLowerCase().includes(searchTerm)));
+        // Text search in title and content
+        const matchesSearch = searchValue === '' ||
+            poem.title.toLowerCase().includes(searchValue) ||
+            poem.text.toLowerCase().includes(searchValue);
 
-        // Theme filter (now using Hindi themes)
-        const themeMatch = themeValue === 'all' ||
+        // Theme filter
+        const matchesTheme = themeValue === 'all' ||
             (poem.themesHindi && poem.themesHindi.includes(themeValue));
 
-        return searchMatch && themeMatch;
+        return matchesSearch && matchesTheme;
     });
 
-    logDebug(`Filter returned ${filteredPoems.length} poems`);
+    logDebug(`Filtered to ${filteredPoems.length} poems`);
     displayPoems(filteredPoems);
 }
 
 function setupEventListeners() {
-    logDebug('Setting up event listeners');
-
-    // Search and filter events - check if elements exist first
     if (searchInput) {
         searchInput.addEventListener('input', filterPoems);
     }
@@ -505,21 +544,21 @@ function setupEventListeners() {
         themeFilter.addEventListener('change', filterPoems);
     }
 
-    // Modal events - check if elements exist first
-    if (closeModal && modal) {
+    if (closeModal) {
         closeModal.addEventListener('click', closeModalHandler);
     }
 
+    // Close modal when clicking outside content
     if (modal) {
-        window.addEventListener('click', (event) => {
+        modal.addEventListener('click', event => {
             if (event.target === modal) {
                 closeModalHandler();
             }
         });
     }
 
-    // Keyboard events
-    window.addEventListener('keydown', (event) => {
+    // Close modal with Escape key
+    document.addEventListener('keydown', event => {
         if (event.key === 'Escape' && modal && modal.style.display === 'block') {
             closeModalHandler();
         }
