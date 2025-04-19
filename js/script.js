@@ -15,6 +15,11 @@ const modalImage = modal ? document.getElementById('modal-image') : null;
 const modalText = modal ? document.getElementById('modal-text') : null;
 const modalTags = modal ? document.getElementById('modal-tags') : null;
 
+// Version tracking - helps with cache busting
+const scriptVersion = "v1.0.2-patched";
+console.log(`----- Poetry Website ${scriptVersion} -----`);
+console.log(`Running script version: ${scriptVersion} - path fixes & cache busting`);
+
 // Logger function for better debugging
 function logDebug(message, data = null) {
     const timestamp = new Date().toISOString();
@@ -30,11 +35,13 @@ document.addEventListener('DOMContentLoaded', initApp);
 
 async function initApp() {
     try {
+        console.log(`[Poetry App ${scriptVersion}] Starting initialization...`);
         logDebug('Starting application initialization');
 
         // Determine base URL for GitHub Pages
         detectBaseUrl();
         logDebug(`Using base URL: ${baseUrl}`);
+        console.log(`[Poetry App ${scriptVersion}] Using base URL: ${baseUrl}`);
 
         // Check if required DOM elements exist
         if (!poemsContainer) {
@@ -46,11 +53,14 @@ async function initApp() {
 
         // Load all poems from the manifest file
         try {
+            console.log(`[Poetry App ${scriptVersion}] Loading poems from manifest file...`);
             logDebug(`Attempting to load poems from manifest`);
             const poemsList = await loadPoemsFromManifest();
             logDebug(`Successfully loaded ${poemsList.length} poems`);
+            console.log(`[Poetry App ${scriptVersion}] Successfully loaded ${poemsList.length} poems`);
             allPoems = [...poemsList];
         } catch (error) {
+            console.error(`[Poetry App ${scriptVersion}] Error loading poems:`, error);
             logDebug(`Error loading poems:`, error);
             poemsContainer.innerHTML = `<div class="error">Error loading poems: ${error.message}</div>`;
             return;
@@ -59,6 +69,7 @@ async function initApp() {
         logDebug(`Total poems loaded: ${allPoems.length}`);
 
         if (allPoems.length === 0) {
+            console.warn(`[Poetry App ${scriptVersion}] No poems were loaded!`);
             logDebug('No poems were loaded, showing error message');
             poemsContainer.innerHTML = `
                 <div class="error">
@@ -96,8 +107,10 @@ async function initApp() {
         // Set up event listeners
         setupEventListeners();
 
+        console.log(`[Poetry App ${scriptVersion}] Application initialized successfully`);
         logDebug(`Application initialized successfully`);
     } catch (error) {
+        console.error(`[Poetry App ${scriptVersion}] Critical error:`, error);
         logDebug('Critical error initializing application:', error);
         if (poemsContainer) {
             poemsContainer.innerHTML = `<div class="error">Error loading poems. Please try again later. Details: ${error.message}</div>`;
@@ -126,11 +139,22 @@ async function loadPoemsFromManifest() {
     logDebug(`Loading poems from manifest`);
 
     try {
-        // GitHub Pages specific manifest path
-        const manifestPath = `${baseUrl}poems/poems-manifest.json`;
+        // Add a cache-busting parameter to ensure we get the latest manifest
+        const timestamp = new Date().getTime();
+
+        // GitHub Pages specific manifest path with cache busting
+        const manifestPath = `${baseUrl}poems/poems-manifest.json?nocache=${timestamp}`;
+        console.log(`[Poetry App ${scriptVersion}] Attempting to load manifest from: ${manifestPath}`);
         logDebug(`Attempting to load manifest from: ${manifestPath}`);
 
-        const manifestResponse = await fetch(manifestPath);
+        const manifestResponse = await fetch(manifestPath, {
+            cache: 'no-store', // Tell browser not to use cached version
+            headers: {
+                'Cache-Control': 'no-cache, no-store, must-revalidate',
+                'Pragma': 'no-cache',
+                'Expires': '0'
+            }
+        });
 
         if (!manifestResponse.ok) {
             throw new Error(`Failed to load poems manifest. Status: ${manifestResponse.status}`);
@@ -142,6 +166,7 @@ async function loadPoemsFromManifest() {
             throw new Error('Manifest has no poems or is invalid');
         }
 
+        console.log(`[Poetry App ${scriptVersion}] Manifest contains ${manifest.poems.length} poems`);
         logDebug(`Manifest contains ${manifest.poems.length} poems`);
 
         // Load each poem from the manifest
@@ -166,16 +191,29 @@ async function loadPoemsFromManifest() {
 
 // Load a single poem file by filename
 async function loadPoemFile(fileName) {
+    console.log(`[Poetry App ${scriptVersion}] Loading poem file: ${fileName}`);
     logDebug(`Loading poem file: ${fileName}`);
 
     try {
+        // Add a cache-busting parameter
+        const timestamp = new Date().getTime();
+
         // Construct paths with the baseUrl
         const poemsDir = `${baseUrl}poems/`;
 
         // Load metadata
-        const metadataUrl = `${poemsDir}${fileName}.metadata.json`;
+        const metadataUrl = `${poemsDir}${fileName}.metadata.json?nocache=${timestamp}`;
+        console.log(`[Poetry App ${scriptVersion}] Loading metadata: ${metadataUrl}`);
         logDebug(`Attempting to load metadata from: ${metadataUrl}`);
-        const metadataResponse = await fetch(metadataUrl);
+
+        const metadataResponse = await fetch(metadataUrl, {
+            cache: 'no-store',
+            headers: {
+                'Cache-Control': 'no-cache, no-store, must-revalidate',
+                'Pragma': 'no-cache',
+                'Expires': '0'
+            }
+        });
 
         if (!metadataResponse.ok) {
             throw new Error(`Failed to load metadata for ${fileName}. Status: ${metadataResponse.status}`);
@@ -184,9 +222,18 @@ async function loadPoemFile(fileName) {
         const metadata = await metadataResponse.json();
 
         // Load text
-        const textUrl = `${poemsDir}${fileName}.txt`;
+        const textUrl = `${poemsDir}${fileName}.txt?nocache=${timestamp}`;
+        console.log(`[Poetry App ${scriptVersion}] Loading text: ${textUrl}`);
         logDebug(`Attempting to load text from: ${textUrl}`);
-        const textResponse = await fetch(textUrl);
+
+        const textResponse = await fetch(textUrl, {
+            cache: 'no-store',
+            headers: {
+                'Cache-Control': 'no-cache, no-store, must-revalidate',
+                'Pragma': 'no-cache',
+                'Expires': '0'
+            }
+        });
 
         if (!textResponse.ok) {
             throw new Error(`Failed to load text for ${fileName}. Status: ${textResponse.status}`);
@@ -194,13 +241,24 @@ async function loadPoemFile(fileName) {
 
         const text = await textResponse.text();
 
-        // Set image path
+        // Check text content and normalize line endings
+        const hasCRLF = text.includes('\r\n'); // Windows-style line endings
+        const hasLF = text.includes('\n'); // Unix-style line endings
+        console.log(`[Poetry App ${scriptVersion}] Text has Windows line endings (CRLF): ${hasCRLF}`);
+        console.log(`[Poetry App ${scriptVersion}] Text has Unix line endings (LF): ${hasLF}`);
+
+        // Normalize line endings to LF
+        const normalizedText = text.replace(/\r\n/g, '\n');
+
+        // Set image path - no cache parameter for images as they're large files
         const imagePath = `${poemsDir}${fileName}.png`;
+
+        console.log(`[Poetry App ${scriptVersion}] Successfully loaded poem: ${fileName}`);
 
         return {
             id: `poem-${fileName}`,
             title: metadata.title || fileName,
-            text: text,
+            text: normalizedText,
             date: metadata.date || fileName.split('_')[0], // Try to extract date from filename
             language: metadata.language || 'Hindi',
             imagePath: imagePath,
@@ -208,6 +266,7 @@ async function loadPoemFile(fileName) {
             themesHindi: metadata.themesHindi || [],
         };
     } catch (error) {
+        console.error(`[Poetry App ${scriptVersion}] Error loading poem ${fileName}:`, error);
         logDebug(`Error loading poem ${fileName}: ${error.message}`);
         return null;
     }
