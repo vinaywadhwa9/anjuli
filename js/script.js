@@ -133,27 +133,35 @@ async function loadPoemsFromManifest() {
     logDebug(`Loading poems from manifest`);
 
     try {
-        // Try to load the manifest file - using the correct path with baseUrl
-        let manifestPath = baseUrl + 'poems/poems-manifest.json';
-        logDebug(`Attempting to load manifest from: ${manifestPath}`);
+        // Try multiple paths for the manifest file to ensure we find it
+        const possiblePaths = [
+            `${baseUrl}poems/poems-manifest.json`,
+            `poems/poems-manifest.json`,
+            `./poems/poems-manifest.json`,
+            `/anjuli/poems/poems-manifest.json` // Hardcoded GitHub Pages path as fallback
+        ];
 
-        let manifestResponse = await fetch(manifestPath);
+        let manifestResponse = null;
+        let manifestPath = '';
 
-        // If that fails, try an alternate location
-        if (!manifestResponse.ok) {
-            logDebug(`Failed to load manifest from ${manifestPath}, trying alternate location`);
-            manifestPath = 'poems/poems-manifest.json';
-            manifestResponse = await fetch(manifestPath);
-
-            if (!manifestResponse.ok) {
-                manifestPath = './poems/poems-manifest.json';
-                logDebug(`Failed again, trying: ${manifestPath}`);
-                manifestResponse = await fetch(manifestPath);
-
-                if (!manifestResponse.ok) {
-                    throw new Error(`Failed to load poems manifest. Status: ${manifestResponse.status}`);
+        // Try each path until we find one that works
+        for (const path of possiblePaths) {
+            try {
+                logDebug(`Attempting to load manifest from: ${path}`);
+                const response = await fetch(path);
+                if (response.ok) {
+                    manifestResponse = response;
+                    manifestPath = path;
+                    logDebug(`Successfully loaded manifest from: ${path}`);
+                    break;
                 }
+            } catch (error) {
+                logDebug(`Failed to load from ${path}: ${error.message}`);
             }
+        }
+
+        if (!manifestResponse || !manifestResponse.ok) {
+            throw new Error(`Failed to load poems manifest from any path`);
         }
 
         const manifest = await manifestResponse.json();
@@ -162,13 +170,17 @@ async function loadPoemsFromManifest() {
             throw new Error('Manifest has no poems or is invalid');
         }
 
+        // Set the correct base directory for poems based on successful manifest path
+        const poemsBasePath = manifestPath.substring(0, manifestPath.lastIndexOf('/') + 1);
+        logDebug(`Using poems base path: ${poemsBasePath}`);
+
         logDebug(`Manifest contains ${manifest.poems.length} poems`);
 
         // Load each poem from the manifest
         const poems = await Promise.all(
             manifest.poems.map(async (fileName) => {
                 try {
-                    return await loadPoemFile(fileName);
+                    return await loadPoemFile(fileName, poemsBasePath);
                 } catch (error) {
                     logDebug(`Failed to load poem ${fileName}:`, error);
                     return null;
@@ -185,15 +197,12 @@ async function loadPoemsFromManifest() {
 }
 
 // Load a single poem file by filename
-async function loadPoemFile(fileName) {
-    logDebug(`Loading poem file: ${fileName}`);
+async function loadPoemFile(fileName, poemsBasePath) {
+    logDebug(`Loading poem file: ${fileName} from ${poemsBasePath}`);
 
     try {
-        // Try to construct proper URLs for the poem files with the base URL
-        const poemsDir = baseUrl + 'poems/';
-
         // Load metadata
-        const metadataUrl = `${poemsDir}${fileName}.metadata.json`;
+        const metadataUrl = `${poemsBasePath}${fileName}.metadata.json`;
         logDebug(`Attempting to load metadata from: ${metadataUrl}`);
         const metadataResponse = await fetch(metadataUrl);
 
@@ -204,7 +213,7 @@ async function loadPoemFile(fileName) {
         const metadata = await metadataResponse.json();
 
         // Load text
-        const textUrl = `${poemsDir}${fileName}.txt`;
+        const textUrl = `${poemsBasePath}${fileName}.txt`;
         logDebug(`Attempting to load text from: ${textUrl}`);
         const textResponse = await fetch(textUrl);
 
@@ -215,7 +224,7 @@ async function loadPoemFile(fileName) {
         const text = await textResponse.text();
 
         // Use the image if it exists
-        const imagePath = `${poemsDir}${fileName}.png`;
+        const imagePath = `${poemsBasePath}${fileName}.png`;
 
         return {
             id: `poem-${fileName}`,
@@ -288,10 +297,36 @@ function createPoemCard(poem) {
     image.alt = poem.title;
     image.loading = 'lazy';
 
-    // Handle image loading errors
+    // Handle image loading errors with multiple fallback paths
     image.onerror = function () {
-        // Use base URL for placeholder image
-        this.src = baseUrl + 'img/placeholder.jpg';
+        // Try different paths for the placeholder image
+        const placeholderPaths = [
+            baseUrl + 'img/placeholder.jpg',
+            'img/placeholder.jpg',
+            './img/placeholder.jpg',
+            '/anjuli/img/placeholder.jpg'
+        ];
+
+        // Try the first path
+        this.src = placeholderPaths[0];
+
+        // If that fails, try the next one
+        this.onerror = function () {
+            this.src = placeholderPaths[1];
+
+            // If that fails, try the next one
+            this.onerror = function () {
+                this.src = placeholderPaths[2];
+
+                // If that fails, try the final one
+                this.onerror = function () {
+                    this.src = placeholderPaths[3];
+
+                    // If all fail, just show broken image
+                    this.onerror = null;
+                };
+            };
+        };
     };
 
     imageContainer.appendChild(image);
@@ -372,9 +407,36 @@ function openPoemModal(poem) {
         modalImage.src = poem.imagePath;
         modalImage.alt = poem.title;
 
-        // Handle image loading errors
+        // Handle image loading errors with multiple fallback paths
         modalImage.onerror = function () {
-            this.src = baseUrl + 'img/placeholder.jpg';
+            // Try different paths for the placeholder image
+            const placeholderPaths = [
+                baseUrl + 'img/placeholder.jpg',
+                'img/placeholder.jpg',
+                './img/placeholder.jpg',
+                '/anjuli/img/placeholder.jpg'
+            ];
+
+            // Try the first path
+            this.src = placeholderPaths[0];
+
+            // If that fails, try the next one
+            this.onerror = function () {
+                this.src = placeholderPaths[1];
+
+                // If that fails, try the next one
+                this.onerror = function () {
+                    this.src = placeholderPaths[2];
+
+                    // If that fails, try the final one
+                    this.onerror = function () {
+                        this.src = placeholderPaths[3];
+
+                        // If all fail, just show broken image
+                        this.onerror = null;
+                    };
+                };
+            };
         };
     }
 
