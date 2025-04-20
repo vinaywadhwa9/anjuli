@@ -16,9 +16,9 @@ const modalText = modal ? document.getElementById('modal-text') : null;
 const modalTags = modal ? document.getElementById('modal-tags') : null;
 
 // Version tracking - helps with cache busting
-const scriptVersion = "v1.0.2-patched";
+const scriptVersion = "v1.0.3-date-fix";
 console.log(`----- Poetry Website ${scriptVersion} -----`);
-console.log(`Running script version: ${scriptVersion} - path fixes & cache busting`);
+console.log(`Running script version: ${scriptVersion} - date parsing fixes & sorting`);
 
 // Logger function for better debugging
 function logDebug(message, data = null) {
@@ -85,7 +85,16 @@ async function initApp() {
         }
 
         // Sort poems in reverse chronological order (newest first)
-        allPoems.sort((a, b) => new Date(b.date) - new Date(a.date));
+        console.log(`[Poetry App ${scriptVersion}] Sorting ${allPoems.length} poems by date...`);
+        allPoems.sort((a, b) => {
+            // Parse dates properly with consistent format
+            const dateA = parsePoetryDate(a.date);
+            const dateB = parsePoetryDate(b.date);
+            console.log(`[Poetry App ${scriptVersion}] Comparing dates: ${a.date} (${dateA}) vs ${b.date} (${dateB})`);
+            return dateB - dateA; // Sort in descending order (newest first)
+        });
+
+        console.log(`[Poetry App ${scriptVersion}] Sorted poems - first item date: ${allPoems.length > 0 ? allPoems[0].date : 'No poems'}`);
 
         // Extract unique Hindi themes for the filter
         console.log(`[Poetry App ${scriptVersion}] Extracting themes from ${allPoems.length} poems...`);
@@ -396,7 +405,8 @@ function formatDate(dateString) {
     if (!dateString) return '';
 
     try {
-        const date = new Date(dateString);
+        // Parse the date using our robust parsing function
+        const date = parsePoetryDate(dateString);
 
         // Format as DD MMM YYYY (e.g., 15 Jan 2024)
         return date.toLocaleDateString('en-IN', {
@@ -406,7 +416,7 @@ function formatDate(dateString) {
         });
     } catch (error) {
         logDebug(`Error formatting date: ${dateString}`, error);
-        return dateString;
+        return dateString; // Return original string as fallback
     }
 }
 
@@ -513,4 +523,56 @@ function setupEventListeners() {
             closeModalHandler();
         }
     });
+}
+
+/**
+ * Parse date strings consistently for sorting
+ * Handles different date formats including:
+ * - ISO strings (2025-04-16)
+ * - Formatted dates (16 Apr 2025)
+ * - Filenames with dates (2025-04-16_title)
+ */
+function parsePoetryDate(dateString) {
+    if (!dateString) return new Date(0); // Default to epoch if no date
+
+    try {
+        // Log the date string being parsed
+        console.log(`[Poetry App ${scriptVersion}] Parsing date: "${dateString}"`);
+
+        // Case 1: Check if it's already a Date object
+        if (dateString instanceof Date) {
+            return dateString;
+        }
+
+        // Case 2: Try to extract date from filename pattern (YYYY-MM-DD_title)
+        const filenameMatch = dateString.match(/^(\d{4})-(\d{2})-(\d{2})_/);
+        if (filenameMatch) {
+            const [_, year, month, day] = filenameMatch;
+            return new Date(parseInt(year), parseInt(month) - 1, parseInt(day));
+        }
+
+        // Case 3: Handle formatted date (DD MMM YYYY)
+        const formattedMatch = dateString.match(/(\d{1,2})\s+(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)\s+(\d{4})/i);
+        if (formattedMatch) {
+            const [_, day, monthStr, year] = formattedMatch;
+            const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+            const month = monthNames.findIndex(m => m.toLowerCase() === monthStr.toLowerCase());
+            if (month !== -1) {
+                return new Date(parseInt(year), month, parseInt(day));
+            }
+        }
+
+        // Case 4: Try standard date parsing (handles ISO format YYYY-MM-DD)
+        const date = new Date(dateString);
+        if (!isNaN(date.getTime())) {
+            return date;
+        }
+
+        // If all else fails, log error and return current date
+        console.error(`[Poetry App ${scriptVersion}] Failed to parse date: ${dateString}`);
+        return new Date();
+    } catch (error) {
+        console.error(`[Poetry App ${scriptVersion}] Error parsing date ${dateString}:`, error);
+        return new Date(); // Return current date as fallback
+    }
 } 
