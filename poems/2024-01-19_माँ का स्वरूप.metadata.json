@@ -23,5 +23,9 @@
     ],
     "meter": "quatrains with varying rhyme patterns",
     "rhyme_scheme": "ABCB with variations",
-    "image_prompt": "Black and white, low fidelity sketch style (5x7 inches) of a person looking at mother's photograph, Indian style"
+    "image_prompt": "Black and white, low fidelity sketch style (5x7 inches) of a person looking at mother's photograph, Indian style",
+    "public_themes_hindi": [
+        "संबंध",
+        "जीवन"
+    ]
 }

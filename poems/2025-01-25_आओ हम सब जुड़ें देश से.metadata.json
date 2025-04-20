@@ -27,5 +27,10 @@
     ],
     "meter": "variable with emphasis on rhythm",
     "rhyme_scheme": "AABB with variations",
-    "image_prompt": "Black and white, low fidelity sketch style (5x7 inches) of diverse Indians standing together with the national flag"
+    "image_prompt": "Black and white, low fidelity sketch style (5x7 inches) of diverse Indians standing together with the national flag",
+    "public_themes_hindi": [
+        "राष्ट्र",
+        "समाज",
+        "संबंध"
+    ]
 }

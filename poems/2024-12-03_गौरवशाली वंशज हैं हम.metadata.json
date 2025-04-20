@@ -23,5 +23,9 @@
     ],
     "meter": "quatrains with consistent end rhymes",
     "rhyme_scheme": "AABB",
-    "image_prompt": "Black and white, low fidelity sketch style (5x7 inches) of diverse people standing together under a Banyan tree, Indian style"
+    "image_prompt": "Black and white, low fidelity sketch style (5x7 inches) of diverse people standing together under a Banyan tree, Indian style",
+    "public_themes_hindi": [
+        "समाज",
+        "आध्यात्मिकता"
+    ]
 }

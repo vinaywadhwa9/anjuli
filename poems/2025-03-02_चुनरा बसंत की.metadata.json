@@ -23,5 +23,8 @@
     ],
     "meter": "quatrains with consistent end rhymes",
     "rhyme_scheme": "ABAB CDCD",
-    "image_prompt": "Black and white, low fidelity sketch style (5x7 inches) of Earth draped in a saree, Indian style"
+    "image_prompt": "Black and white, low fidelity sketch style (5x7 inches) of Earth draped in a saree, Indian style",
+    "public_themes_hindi": [
+        "प्रकृति"
+    ]
 }

@@ -2,11 +2,12 @@
 let allPoems = [];
 let uniqueThemesHindi = new Set();
 let baseUrl = '';
+let activeTheme = 'all'; // Track the currently selected theme
 
 // DOM elements - add null checks
 const poemsContainer = document.getElementById('poems-container');
 const searchInput = document.getElementById('search-input');
-const themeFilter = document.getElementById('theme-filter');
+const themePillsContainer = document.getElementById('theme-pills-container');
 const modal = document.getElementById('poem-modal');
 const closeModal = document.querySelector('.close-modal');
 const modalTitle = modal ? document.getElementById('modal-title') : null;
@@ -16,7 +17,7 @@ const modalText = modal ? document.getElementById('modal-text') : null;
 const modalTags = modal ? document.getElementById('modal-tags') : null;
 
 // Version tracking - helps with cache busting
-const scriptVersion = "v1.0.5-fix-themes";
+const scriptVersion = "v1.0.7-theme-pills";
 
 // Initialize the application
 document.addEventListener('DOMContentLoaded', initApp);
@@ -78,7 +79,7 @@ async function initApp() {
         });
 
         // Populate theme filter with Hindi themes
-        if (themeFilter) {
+        if (themePillsContainer) {
             populateThemeFilter();
         }
 
@@ -213,8 +214,8 @@ async function loadPoemFile(fileName) {
             language: metadata.language || 'Hindi',
             imagePath: imagePath,
             themes: metadata.themes || [],
-            // Note: the field in metadata is "theme_hindi" (not "themesHindi")
-            themesHindi: metadata.theme_hindi || [],
+            // Use public_themes_hindi instead of theme_hindi
+            themesHindi: metadata.public_themes_hindi || [],
         };
     } catch (error) {
         console.error(`Error loading poem ${fileName}:`, error);
@@ -223,19 +224,42 @@ async function loadPoemFile(fileName) {
 }
 
 function populateThemeFilter() {
+    if (!themePillsContainer) return;
+
     // Sort themes alphabetically
     const sortedThemes = Array.from(uniqueThemesHindi).sort();
 
-    // Add "All Themes" option
-    themeFilter.innerHTML = '<option value="all">All Themes</option>';
+    // Add "All Themes" pill first (selected by default)
+    const allThemePill = document.createElement('button');
+    allThemePill.className = 'theme-pill active';
+    allThemePill.textContent = 'All Themes';
+    allThemePill.dataset.theme = 'all';
+    allThemePill.addEventListener('click', handleThemeClick);
+    themePillsContainer.appendChild(allThemePill);
 
-    // Add theme options
+    // Add theme pills
     sortedThemes.forEach(theme => {
-        const option = document.createElement('option');
-        option.value = theme;
-        option.textContent = theme;
-        themeFilter.appendChild(option);
+        const pill = document.createElement('button');
+        pill.className = 'theme-pill';
+        pill.textContent = theme;
+        pill.dataset.theme = theme;
+        pill.addEventListener('click', handleThemeClick);
+        themePillsContainer.appendChild(pill);
     });
+}
+
+function handleThemeClick(event) {
+    // Update active theme
+    activeTheme = event.target.dataset.theme;
+
+    // Update active class on pills
+    document.querySelectorAll('.theme-pill').forEach(pill => {
+        pill.classList.remove('active');
+    });
+    event.target.classList.add('active');
+
+    // Filter poems based on new selection
+    filterPoems();
 }
 
 function displayPoems(poems) {
@@ -398,7 +422,7 @@ function closeModalHandler() {
 
 function filterPoems() {
     const searchValue = searchInput ? searchInput.value.toLowerCase() : '';
-    const themeValue = themeFilter ? themeFilter.value : 'all';
+    const themeValue = activeTheme; // Use the activeTheme variable instead of dropdown value
 
     const filteredPoems = allPoems.filter(poem => {
         // Text search in title and content
@@ -421,9 +445,7 @@ function setupEventListeners() {
         searchInput.addEventListener('input', filterPoems);
     }
 
-    if (themeFilter) {
-        themeFilter.addEventListener('change', filterPoems);
-    }
+    // Note: Theme pill event listeners are added when the pills are created
 
     if (closeModal) {
         closeModal.addEventListener('click', closeModalHandler);

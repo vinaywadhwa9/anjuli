@@ -23,5 +23,9 @@
     ],
     "meter": "quatrains with consistent syllable count",
     "rhyme_scheme": "AABB",
-    "image_prompt": "Black and white, low fidelity sketch style (5x7 inches) of two friends walking together on a path, Indian style"
+    "image_prompt": "Black and white, low fidelity sketch style (5x7 inches) of two friends walking together on a path, Indian style",
+    "public_themes_hindi": [
+        "संबंध",
+        "समाज"
+    ]
 }

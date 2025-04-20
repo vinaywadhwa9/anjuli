@@ -23,5 +23,9 @@
     ],
     "meter": "quatrains with consistent end rhymes",
     "rhyme_scheme": "AABB",
-    "image_prompt": "Black and white, low fidelity sketch style (5x7 inches) of a person standing resolutely against ocean waves, Indian style"
+    "image_prompt": "Black and white, low fidelity sketch style (5x7 inches) of a person standing resolutely against ocean waves, Indian style",
+    "public_themes_hindi": [
+        "राष्ट्र",
+        "जीवन"
+    ]
 }

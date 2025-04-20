@@ -23,5 +23,9 @@
     ],
     "meter": "free verse with quatrains",
     "rhyme_scheme": "AABB",
-    "image_prompt": "Black and white, low fidelity sketch style (5x7 inches) of an elderly couple holding hands, Indian style"
+    "image_prompt": "Black and white, low fidelity sketch style (5x7 inches) of an elderly couple holding hands, Indian style",
+    "public_themes_hindi": [
+        "जीवन",
+        "संबंध"
+    ]
 }
