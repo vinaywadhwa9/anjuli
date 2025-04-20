@@ -5,7 +5,7 @@ let baseUrl = '';
 
 // DOM elements - add null checks
 const poemsContainer = document.getElementById('poems-container');
-const searchInput = document.getElementById('search');
+const searchInput = document.getElementById('search-input');
 const themeFilter = document.getElementById('theme-filter');
 const modal = document.getElementById('poem-modal');
 const closeModal = document.querySelector('.close-modal');
@@ -16,32 +16,15 @@ const modalText = modal ? document.getElementById('modal-text') : null;
 const modalTags = modal ? document.getElementById('modal-tags') : null;
 
 // Version tracking - helps with cache busting
-const scriptVersion = "v1.0.3-date-fix";
-console.log(`----- Poetry Website ${scriptVersion} -----`);
-console.log(`Running script version: ${scriptVersion} - date parsing fixes & sorting`);
-
-// Logger function for better debugging
-function logDebug(message, data = null) {
-    const timestamp = new Date().toISOString();
-    if (data) {
-        console.log(`[${timestamp}] ${message}`, data);
-    } else {
-        console.log(`[${timestamp}] ${message}`);
-    }
-}
+const scriptVersion = "v1.0.5-fix-themes";
 
 // Initialize the application
 document.addEventListener('DOMContentLoaded', initApp);
 
 async function initApp() {
     try {
-        console.log(`[Poetry App ${scriptVersion}] Starting initialization...`);
-        logDebug('Starting application initialization');
-
         // Determine base URL for GitHub Pages
         detectBaseUrl();
-        logDebug(`Using base URL: ${baseUrl}`);
-        console.log(`[Poetry App ${scriptVersion}] Using base URL: ${baseUrl}`);
 
         // Check if required DOM elements exist
         if (!poemsContainer) {
@@ -53,24 +36,15 @@ async function initApp() {
 
         // Load all poems from the manifest file
         try {
-            console.log(`[Poetry App ${scriptVersion}] Loading poems from manifest file...`);
-            logDebug(`Attempting to load poems from manifest`);
             const poemsList = await loadPoemsFromManifest();
-            logDebug(`Successfully loaded ${poemsList.length} poems`);
-            console.log(`[Poetry App ${scriptVersion}] Successfully loaded ${poemsList.length} poems`);
             allPoems = [...poemsList];
         } catch (error) {
-            console.error(`[Poetry App ${scriptVersion}] Error loading poems:`, error);
-            logDebug(`Error loading poems:`, error);
+            console.error(`Error loading poems:`, error);
             poemsContainer.innerHTML = `<div class="error">Error loading poems: ${error.message}</div>`;
             return;
         }
 
-        logDebug(`Total poems loaded: ${allPoems.length}`);
-
         if (allPoems.length === 0) {
-            console.warn(`[Poetry App ${scriptVersion}] No poems were loaded!`);
-            logDebug('No poems were loaded, showing error message');
             poemsContainer.innerHTML = `
                 <div class="error">
                     No poems could be loaded. This could be because:
@@ -85,41 +59,27 @@ async function initApp() {
         }
 
         // Sort poems in reverse chronological order (newest first)
-        console.log(`[Poetry App ${scriptVersion}] Sorting ${allPoems.length} poems by date...`);
         allPoems.sort((a, b) => {
             // Parse dates properly with consistent format
             const dateA = parsePoetryDate(a.date);
             const dateB = parsePoetryDate(b.date);
-            console.log(`[Poetry App ${scriptVersion}] Comparing dates: ${a.date} (${dateA}) vs ${b.date} (${dateB})`);
             return dateB - dateA; // Sort in descending order (newest first)
         });
 
-        console.log(`[Poetry App ${scriptVersion}] Sorted poems - first item date: ${allPoems.length > 0 ? allPoems[0].date : 'No poems'}`);
-
         // Extract unique Hindi themes for the filter
-        console.log(`[Poetry App ${scriptVersion}] Extracting themes from ${allPoems.length} poems...`);
-        console.log(`[Poetry App ${scriptVersion}] First poem object:`, allPoems.length > 0 ? allPoems[0] : 'No poems loaded');
-        allPoems.forEach((poem, index) => {
-            if (poem && poem.themesHindi && Array.isArray(poem.themesHindi)) {
+        allPoems.forEach((poem) => {
+            if (poem.themesHindi && Array.isArray(poem.themesHindi)) {
                 poem.themesHindi.forEach(theme => {
                     if (theme && typeof theme === 'string') {
                         uniqueThemesHindi.add(theme.trim());
                     }
                 });
-            } else {
-                console.warn(`[Poetry App ${scriptVersion}] Poem at index ${index} has missing or invalid themesHindi:`, poem);
             }
         });
 
-        console.log(`[Poetry App ${scriptVersion}] Found ${uniqueThemesHindi.size} unique Hindi themes:`, Array.from(uniqueThemesHindi));
-        logDebug(`Found ${uniqueThemesHindi.size} unique Hindi themes`);
-
         // Populate theme filter with Hindi themes
         if (themeFilter) {
-            console.log(`[Poetry App ${scriptVersion}] Populating theme filter...`);
             populateThemeFilter();
-        } else {
-            console.warn(`[Poetry App ${scriptVersion}] Theme filter element not found!`);
         }
 
         // Display the poems
@@ -127,12 +87,8 @@ async function initApp() {
 
         // Set up event listeners
         setupEventListeners();
-
-        console.log(`[Poetry App ${scriptVersion}] Application initialized successfully`);
-        logDebug(`Application initialized successfully`);
     } catch (error) {
-        console.error(`[Poetry App ${scriptVersion}] Critical error:`, error);
-        logDebug('Critical error initializing application:', error);
+        console.error(`Critical error:`, error);
         if (poemsContainer) {
             poemsContainer.innerHTML = `<div class="error">Error loading poems. Please try again later. Details: ${error.message}</div>`;
         }
@@ -142,31 +98,24 @@ async function initApp() {
 // Function to detect base URL for GitHub Pages
 function detectBaseUrl() {
     const currentUrl = window.location.href;
-    logDebug(`Current URL: ${currentUrl}`);
 
     if (currentUrl.includes('github.io')) {
         // For GitHub Pages, use a hardcoded path based on repository name
         baseUrl = '/anjuli/';
-        logDebug(`Using GitHub Pages path: ${baseUrl}`);
     } else {
         // For local development
         baseUrl = '/';
-        logDebug('Using default base URL for local development');
     }
 }
 
 // Simplified function to load poems using the manifest
 async function loadPoemsFromManifest() {
-    logDebug(`Loading poems from manifest`);
-
     try {
         // Add a cache-busting parameter to ensure we get the latest manifest
         const timestamp = new Date().getTime();
 
         // GitHub Pages specific manifest path with cache busting
         const manifestPath = `${baseUrl}poems/poems-manifest.json?nocache=${timestamp}`;
-        console.log(`[Poetry App ${scriptVersion}] Attempting to load manifest from: ${manifestPath}`);
-        logDebug(`Attempting to load manifest from: ${manifestPath}`);
 
         const manifestResponse = await fetch(manifestPath, {
             cache: 'no-store', // Tell browser not to use cached version
@@ -187,16 +136,12 @@ async function loadPoemsFromManifest() {
             throw new Error('Manifest has no poems or is invalid');
         }
 
-        console.log(`[Poetry App ${scriptVersion}] Manifest contains ${manifest.poems.length} poems`);
-        logDebug(`Manifest contains ${manifest.poems.length} poems`);
-
         // Load each poem from the manifest
         const poems = await Promise.all(
             manifest.poems.map(async (fileName) => {
                 try {
                     return await loadPoemFile(fileName);
                 } catch (error) {
-                    logDebug(`Failed to load poem ${fileName}:`, error);
                     return null;
                 }
             })
@@ -205,16 +150,12 @@ async function loadPoemsFromManifest() {
         // Filter out any nulls (failed to load)
         return poems.filter(poem => poem !== null);
     } catch (error) {
-        logDebug(`Error loading poems from manifest: ${error.message}`);
         throw error;
     }
 }
 
 // Load a single poem file by filename
 async function loadPoemFile(fileName) {
-    console.log(`[Poetry App ${scriptVersion}] Loading poem file: ${fileName}`);
-    logDebug(`Loading poem file: ${fileName}`);
-
     try {
         // Add a cache-busting parameter
         const timestamp = new Date().getTime();
@@ -224,8 +165,6 @@ async function loadPoemFile(fileName) {
 
         // Load metadata
         const metadataUrl = `${poemsDir}${fileName}.metadata.json?nocache=${timestamp}`;
-        console.log(`[Poetry App ${scriptVersion}] Loading metadata: ${metadataUrl}`);
-        logDebug(`Attempting to load metadata from: ${metadataUrl}`);
 
         const metadataResponse = await fetch(metadataUrl, {
             cache: 'no-store',
@@ -244,8 +183,6 @@ async function loadPoemFile(fileName) {
 
         // Load text
         const textUrl = `${poemsDir}${fileName}.txt?nocache=${timestamp}`;
-        console.log(`[Poetry App ${scriptVersion}] Loading text: ${textUrl}`);
-        logDebug(`Attempting to load text from: ${textUrl}`);
 
         const textResponse = await fetch(textUrl, {
             cache: 'no-store',
@@ -262,19 +199,11 @@ async function loadPoemFile(fileName) {
 
         const text = await textResponse.text();
 
-        // Check text content and normalize line endings
-        const hasCRLF = text.includes('\r\n'); // Windows-style line endings
-        const hasLF = text.includes('\n'); // Unix-style line endings
-        console.log(`[Poetry App ${scriptVersion}] Text has Windows line endings (CRLF): ${hasCRLF}`);
-        console.log(`[Poetry App ${scriptVersion}] Text has Unix line endings (LF): ${hasLF}`);
-
         // Normalize line endings to LF
         const normalizedText = text.replace(/\r\n/g, '\n');
 
         // Set image path - no cache parameter for images as they're large files
         const imagePath = `${poemsDir}${fileName}.png`;
-
-        console.log(`[Poetry App ${scriptVersion}] Successfully loaded poem: ${fileName}`);
 
         return {
             id: `poem-${fileName}`,
@@ -284,11 +213,11 @@ async function loadPoemFile(fileName) {
             language: metadata.language || 'Hindi',
             imagePath: imagePath,
             themes: metadata.themes || [],
-            themesHindi: metadata.themesHindi || [],
+            // Note: the field in metadata is "theme_hindi" (not "themesHindi")
+            themesHindi: metadata.theme_hindi || [],
         };
     } catch (error) {
-        console.error(`[Poetry App ${scriptVersion}] Error loading poem ${fileName}:`, error);
-        logDebug(`Error loading poem ${fileName}: ${error.message}`);
+        console.error(`Error loading poem ${fileName}:`, error);
         return null;
     }
 }
@@ -415,15 +344,12 @@ function formatDate(dateString) {
             year: 'numeric'
         });
     } catch (error) {
-        logDebug(`Error formatting date: ${dateString}`, error);
         return dateString; // Return original string as fallback
     }
 }
 
 function openPoemModal(poem) {
     if (!modal) return;
-
-    logDebug(`Opening modal for poem: ${poem.title}`);
 
     // Set modal content
     if (modalTitle) modalTitle.textContent = poem.title;
@@ -471,12 +397,8 @@ function closeModalHandler() {
 }
 
 function filterPoems() {
-    logDebug(`Filtering poems...`);
-
     const searchValue = searchInput ? searchInput.value.toLowerCase() : '';
     const themeValue = themeFilter ? themeFilter.value : 'all';
-
-    logDebug(`Filter values - Search: "${searchValue}", Theme: ${themeValue}`);
 
     const filteredPoems = allPoems.filter(poem => {
         // Text search in title and content
@@ -491,7 +413,6 @@ function filterPoems() {
         return matchesSearch && matchesTheme;
     });
 
-    logDebug(`Filtered to ${filteredPoems.length} poems`);
     displayPoems(filteredPoems);
 }
 
@@ -536,9 +457,6 @@ function parsePoetryDate(dateString) {
     if (!dateString) return new Date(0); // Default to epoch if no date
 
     try {
-        // Log the date string being parsed
-        console.log(`[Poetry App ${scriptVersion}] Parsing date: "${dateString}"`);
-
         // Case 1: Check if it's already a Date object
         if (dateString instanceof Date) {
             return dateString;
@@ -569,10 +487,10 @@ function parsePoetryDate(dateString) {
         }
 
         // If all else fails, log error and return current date
-        console.error(`[Poetry App ${scriptVersion}] Failed to parse date: ${dateString}`);
+        console.error(`Failed to parse date: ${dateString}`);
         return new Date();
     } catch (error) {
-        console.error(`[Poetry App ${scriptVersion}] Error parsing date ${dateString}:`, error);
+        console.error(`Error parsing date ${dateString}:`, error);
         return new Date(); // Return current date as fallback
     }
 } 
