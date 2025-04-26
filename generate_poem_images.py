@@ -4,6 +4,7 @@ import json
 import glob
 import time
 import random
+from dotenv import load_dotenv
 from google import genai
 from google.genai import types
 from PIL import Image
@@ -22,6 +23,10 @@ logging.basicConfig(
     ]
 )
 logger = logging.getLogger("poem-images")
+
+# Load environment variables from .env file
+load_dotenv()
+logger.info("Loaded environment variables from .env file")
 
 # Debug environment setup
 logger.info("Starting image generation script")
@@ -221,6 +226,15 @@ def process_metadata_files():
     # Find all poem folders
     poem_folders = [f"{i}/poems" for i in range(1, 7) if os.path.exists(f"{i}/poems")]
     
+    # Check if we should use the poems directory instead
+    if os.path.exists("poems"):
+        poem_folders = ["poems"]
+        logger.info("Using 'poems' directory for processing")
+    
+    if not poem_folders:
+        logger.error("No poem folders found. Exiting.")
+        return 0, 0, 0
+    
     # Count total files to process
     total_files = sum(len(glob.glob(f"{folder}/*.metadata.json")) for folder in poem_folders)
     processed = 0
@@ -237,6 +251,13 @@ def process_metadata_files():
             base_name = os.path.basename(metadata_file).replace('.metadata.json', '')
             output_image_path = f"{folder}/{base_name}.png"
             
+            # Skip if image already exists (regardless of prompt changes)
+            if os.path.exists(output_image_path):
+                logger.info(f"SKIPPED: Image already exists: {output_image_path}")
+                skipped += 1
+                processed += 1
+                continue
+            
             # Read metadata file
             try:
                 with open(metadata_file, 'r', encoding='utf-8') as f:
@@ -244,17 +265,6 @@ def process_metadata_files():
                 
                 if 'image_prompt' in metadata:
                     image_prompt = metadata['image_prompt']
-                    
-                    # IDEMPOTENCY CHECK 1: Skip if image already exists
-                    if os.path.exists(output_image_path):
-                        # IDEMPOTENCY CHECK 2: Skip if prompt hasn't changed
-                        if is_prompt_processed(image_prompt, output_image_path):
-                            logger.info(f"SKIPPED: Image already exists with same prompt: {output_image_path}")
-                            skipped += 1
-                            processed += 1
-                            continue
-                        else:
-                            logger.info(f"Image exists but prompt has changed: {output_image_path}")
                     
                     logger.info(f"Generating image for: {base_name}")
                     logger.info(f"Prompt: {image_prompt}")
